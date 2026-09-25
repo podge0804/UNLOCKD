@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UNLOCKD</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f0f14;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 420px;
+      background: #18181f;
+      padding: 24px;
+      border-radius: 20px;
+    }
+
+    h1 {
+      margin-top: 0;
+      font-size: 32px;
+    }
+
+    p {
+      color: #a7a7b3;
+    }
+
+    input, textarea, select, button {
+      width: 100%;
+      box-sizing: border-box;
+      margin-top: 12px;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid #2f2f3a;
+      background: #111117;
+      color: white;
+      font-size: 16px;
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    button {
+      background: #7c4dff;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .preview {
+      margin-top: 24px;
+      padding: 18px;
+      border-radius: 14px;
+      background: #22222c;
+    }
+
+    .achievement-title {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .achievement-description {
+      margin-top: 6px;
+      color: #b8b8c5;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app">
+    <h1>UNLOCKD</h1>
+    <p>Create your achievement</p>
+
+    <input id="titleInput" type="text" placeholder="Achievement title" />
+    <textarea id="descriptionInput" placeholder="Achievement description"></textarea>
+
+    <select id="styleInput">
+      <option value="steam">Steam style</option>
+      <option value="minecraft">Minecraft style</option>
+      <option value="custom">Custom</option>
+    </select>
+
+    <button id="generateButton">Generate</button>
+
+    <div class="preview">
+      <div class="achievement-title" id="previewTitle">Achievement unlocked!</div>
+      <div class="achievement-description" id="previewDescription">
+        Your achievement will appear here.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const titleInput = document.getElementById("titleInput");
+    const descriptionInput = document.getElementById("descriptionInput");
+    const generateButton = document.getElementById("generateButton");
+    const previewTitle = document.getElementById("previewTitle");
+    const previewDescription = document.getElementById("previewDescription");
+
+    generateButton.addEventListener("click", () => {
+      previewTitle.textContent = titleInput.value || "Achievement unlocked!";
+      previewDescription.textContent =
+        descriptionInput.value || "Your achievement will appear here.";
+    });
+  </script>
+
+</body>
+</html>
