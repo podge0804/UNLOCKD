@@ -4,117 +4,424 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>UNLOCKD</title>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <style>
+    * { box-sizing: border-box; }
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #0f0f14;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      background: linear-gradient(180deg, #0b0b14, #121226);
+      color: #fff;
       min-height: 100vh;
+    }
+
+    .wrap {
+      max-width: 1100px;
+      margin: 0 auto;
       padding: 20px;
-      box-sizing: border-box;
     }
 
-    .app {
+    .title {
+      font-size: 34px;
+      font-weight: 800;
+      margin: 10px 0 6px;
+      letter-spacing: 1px;
+    }
+
+    .subtitle {
+      color: #b7b7c9;
+      margin-bottom: 24px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .panel {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 18px;
+      backdrop-filter: blur(8px);
+    }
+
+    .panel h2 {
+      margin: 0 0 16px;
+      font-size: 20px;
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 6px;
+      color: #d8d8e6;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .field input,
+    .field textarea,
+    .field select {
       width: 100%;
-      max-width: 420px;
-      background: #18181f;
-      padding: 24px;
-      border-radius: 20px;
-    }
-
-    h1 {
-      margin-top: 0;
-      font-size: 32px;
-    }
-
-    p {
-      color: #a7a7b3;
-    }
-
-    input, textarea, select, button {
-      width: 100%;
-      box-sizing: border-box;
-      margin-top: 12px;
-      padding: 14px;
+      padding: 12px 14px;
       border-radius: 12px;
-      border: 1px solid #2f2f3a;
-      background: #111117;
-      color: white;
-      font-size: 16px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.07);
+      color: #fff;
+      font-size: 15px;
+      outline: none;
     }
 
-    textarea {
+    .field textarea {
       min-height: 90px;
       resize: vertical;
     }
 
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .btns {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
     button {
-      background: #7c4dff;
       border: none;
-      font-weight: bold;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 15px;
+      font-weight: 700;
       cursor: pointer;
     }
 
-    .preview {
-      margin-top: 24px;
-      padding: 18px;
-      border-radius: 14px;
-      background: #22222c;
+    .primary {
+      background: #7c4dff;
+      color: white;
     }
 
-    .achievement-title {
-      font-size: 18px;
-      font-weight: bold;
+    .secondary {
+      background: rgba(255,255,255,0.1);
+      color: white;
     }
 
-    .achievement-description {
+    .preview-area {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .achievement-card {
+      width: 100%;
+      min-height: 240px;
+      border-radius: 20px;
+      padding: 22px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card-top {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .icon-box {
+      width: 84px;
+      height: 84px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 42px;
+      flex-shrink: 0;
+    }
+
+    .text-box {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .ach-label {
+      font-size: 13px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      opacity: 0.85;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    .ach-title {
+      font-size: 28px;
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 8px;
+      word-break: break-word;
+    }
+
+    .ach-desc {
+      font-size: 15px;
+      line-height: 1.45;
+      opacity: 0.95;
+      word-break: break-word;
+    }
+
+    .card-bottom {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: end;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+
+    .date-pill, .rarity-pill {
+      padding: 9px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .steam {
+      background: linear-gradient(135deg, #0d1b2a, #1b263b 60%, #415a77);
+      border: 1px solid rgba(122, 192, 255, 0.3);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+
+    .steam .icon-box {
+      background: linear-gradient(135deg, #1f3d5a, #4c7ea8);
+      box-shadow: inset 0 0 20px rgba(255,255,255,0.12);
+    }
+
+    .steam .date-pill,
+    .steam .rarity-pill {
+      background: rgba(255,255,255,0.12);
+    }
+
+    .minecraft {
+      background: linear-gradient(180deg, #5d3a1a, #3d2813);
+      border: 4px solid #24180c;
+      box-shadow: inset 0 0 0 4px #7a5a30;
+      border-radius: 6px;
+      font-family: "Courier New", monospace;
+    }
+
+    .minecraft .icon-box {
+      border-radius: 4px;
+      background: #7bbf43;
+      border: 3px solid #2b4d14;
+    }
+
+    .minecraft .date-pill,
+    .minecraft .rarity-pill {
+      background: #2f2113;
+      border: 2px solid #7a5a30;
+      border-radius: 4px;
+    }
+
+    .custom {
+      background: radial-gradient(circle at top right, rgba(191,120,255,0.35), transparent 30%),
+                  linear-gradient(135deg, #1a1027, #2b123c 55%, #120c1c);
+      border: 1px solid rgba(207, 123, 255, 0.35);
+      box-shadow: 0 0 30px rgba(143, 59, 255, 0.18);
+    }
+
+    .custom .icon-box {
+      background: linear-gradient(135deg, #6e2edb, #b155ff);
+      box-shadow: 0 0 20px rgba(177,85,255,0.4);
+    }
+
+    .custom .date-pill,
+    .custom .rarity-pill {
+      background: rgba(255,255,255,0.09);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .footer-note {
+      font-size: 13px;
+      color: #a9a9bc;
       margin-top: 6px;
-      color: #b8b8c5;
     }
   </style>
 </head>
 <body>
+  <div class="wrap">
+    <div class="title">UNLOCKD</div>
+    <div class="subtitle">Создай свою ачивку и скачай её как PNG</div>
 
-  <div class="app">
-    <h1>UNLOCKD</h1>
-    <p>Create your achievement</p>
+    <div class="grid">
+      <div class="panel">
+        <h2>Настройки</h2>
 
-    <input id="titleInput" type="text" placeholder="Achievement title" />
-    <textarea id="descriptionInput" placeholder="Achievement description"></textarea>
+        <div class="field">
+          <label for="style">Стиль</label>
+          <select id="style">
+            <option value="steam">Steam</option>
+            <option value="minecraft">Minecraft</option>
+            <option value="custom">Custom / Purple</option>
+          </select>
+        </div>
 
-    <select id="styleInput">
-      <option value="steam">Steam style</option>
-      <option value="minecraft">Minecraft style</option>
-      <option value="custom">Custom</option>
-    </select>
+        <div class="field">
+          <label for="icon">Иконка / emoji</label>
+          <input id="icon" type="text" value="🏆" placeholder="например: 🏆 ✨ 🧙 💜" />
+        </div>
 
-    <button id="generateButton">Generate</button>
+        <div class="field">
+          <label for="titleInput">Название достижения</label>
+          <input id="titleInput" type="text" value="Первый шаг" placeholder="Введите название" />
+        </div>
 
-    <div class="preview">
-      <div class="achievement-title" id="previewTitle">Achievement unlocked!</div>
-      <div class="achievement-description" id="previewDescription">
-        Your achievement will appear here.
+        <div class="field">
+          <label for="descInput">Описание</label>
+          <textarea id="descInput" placeholder="Введите описание">Начало чего-то классного. Ты успешно открыла свой первый проект.</textarea>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="dateInput">Дата</label>
+            <input id="dateInput" type="text" value="25.09.2026" placeholder="например: 25.09.2026" />
+          </div>
+
+          <div class="field">
+            <label for="rarityInput">Редкость / подпись</label>
+            <input id="rarityInput" type="text" value="COMMON" placeholder="например: RARE" />
+          </div>
+        </div>
+
+        <div class="btns">
+          <button class="primary" id="downloadBtn">Скачать PNG</button>
+          <button class="secondary" id="randomBtn">Случайный пример</button>
+        </div>
+
+        <div class="footer-note">
+          если хочешь, потом добавим загрузку своей картинки вместо emoji
+        </div>
+      </div>
+
+      <div class="panel preview-area">
+        <h2>Предпросмотр</h2>
+
+        <div id="achievementCard" class="achievement-card steam">
+          <div class="card-top">
+            <div class="icon-box" id="iconPreview">🏆</div>
+
+            <div class="text-box">
+              <div class="ach-label">Achievement unlocked</div>
+              <div class="ach-title" id="titlePreview">Первый шаг</div>
+              <div class="ach-desc" id="descPreview">
+                Начало чего-то классного. Ты успешно открыла свой первый проект.
+              </div>
+            </div>
+          </div>
+
+          <div class="card-bottom">
+            <div class="date-pill" id="datePreview">25.09.2026</div>
+            <div class="rarity-pill" id="rarityPreview">COMMON</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
   <script>
-    const titleInput = document.getElementById("titleInput");
-    const descriptionInput = document.getElementById("descriptionInput");
-    const generateButton = document.getElementById("generateButton");
-    const previewTitle = document.getElementById("previewTitle");
-    const previewDescription = document.getElementById("previewDescription");
+    const styleEl = document.getElementById('style');
+    const iconEl = document.getElementById('icon');
+    const titleEl = document.getElementById('titleInput');
+    const descEl = document.getElementById('descInput');
+    const dateEl = document.getElementById('dateInput');
+    const rarityEl = document.getElementById('rarityInput');
 
-    generateButton.addEventListener("click", () => {
-      previewTitle.textContent = titleInput.value || "Achievement unlocked!";
-      previewDescription.textContent =
-        descriptionInput.value || "Your achievement will appear here.";
+    const card = document.getElementById('achievementCard');
+    const iconPreview = document.getElementById('iconPreview');
+    const titlePreview = document.getElementById('titlePreview');
+    const descPreview = document.getElementById('descPreview');
+    const datePreview = document.getElementById('datePreview');
+    const rarityPreview = document.getElementById('rarityPreview');
+
+    function updatePreview() {
+      card.className = 'achievement-card ' + styleEl.value;
+      iconPreview.textContent = iconEl.value || '🏆';
+      titlePreview.textContent = titleEl.value || 'Без названия';
+      descPreview.textContent = descEl.value || 'Без описания';
+      datePreview.textContent = dateEl.value || 'Без даты';
+      rarityPreview.textContent = rarityEl.value || 'COMMON';
+    }
+
+    [styleEl, iconEl, titleEl, descEl, dateEl, rarityEl].forEach(el => {
+      el.addEventListener('input', updatePreview);
+      el.addEventListener('change', updatePreview);
     });
-  </script>
 
+    document.getElementById('randomBtn').addEventListener('click', () => {
+      const presets = [
+        {
+          style: 'steam',
+          icon: '🏆',
+          title: 'Первый запуск',
+          desc: 'Ты открыла приложение и начала свой путь.',
+          date: '25.09.2026',
+          rarity: 'COMMON'
+        },
+        {
+          style: 'minecraft',
+          icon: '⛏️',
+          title: 'Добытчик',
+          desc: 'Ты добыл свои первые ресурсы и готов идти дальше.',
+          date: '25.09.2026',
+          rarity: 'RARE'
+        },
+        {
+          style: 'custom',
+          icon: '🧙',
+          title: 'Ведьмина сила',
+          desc: 'Ты пробудила магию и собрала свой готический стиль.',
+          date: '25.09.2026',
+          rarity: 'EPIC'
+        }
+      ];
+
+      const item = presets[Math.floor(Math.random() * presets.length)];
+      styleEl.value = item.style;
+      iconEl.value = item.icon;
+      titleEl.value = item.title;
+      descEl.value = item.desc;
+      dateEl.value = item.date;
+      rarityEl.value = item.rarity;
+      updatePreview();
+    });
+
+    document.getElementById('downloadBtn').addEventListener('click', async () => {
+      const canvas = await html2canvas(card, {
+        backgroundColor: null,
+        scale: 2
+      });
+
+      const link = document.createElement('a');
+      link.download = 'achievement.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    });
+
+    updatePreview();
+  </script>
 </body>
 </html>
