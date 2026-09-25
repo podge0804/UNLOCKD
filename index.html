@@ -3,15 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>UNLOCKD</title>
+  <title>UNLOCKD — Minecraft Achievement Generator</title>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(180deg, #0b0b14, #121226);
+      background: linear-gradient(180deg, #1c1c1c, #101010);
       color: #fff;
+      font-family: Arial, sans-serif;
       min-height: 100vh;
     }
 
@@ -21,41 +24,42 @@
       padding: 20px;
     }
 
-    .title {
-      font-size: 34px;
-      font-weight: 800;
-      margin: 10px 0 6px;
+    .logo {
+      font-size: 32px;
+      font-weight: 900;
+      margin: 0 0 8px;
       letter-spacing: 1px;
     }
 
     .subtitle {
-      color: #b7b7c9;
-      margin-bottom: 24px;
+      margin: 0 0 24px;
+      color: #c8c8c8;
+      font-size: 15px;
     }
 
-    .grid {
+    .layout {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 20px;
     }
 
     @media (max-width: 900px) {
-      .grid {
+      .layout {
         grid-template-columns: 1fr;
       }
     }
 
     .panel {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 18px;
+      background: #191919;
+      border: 2px solid #2d2d2d;
+      border-radius: 16px;
       padding: 18px;
-      backdrop-filter: blur(8px);
     }
 
     .panel h2 {
-      margin: 0 0 16px;
+      margin-top: 0;
       font-size: 20px;
+      margin-bottom: 16px;
     }
 
     .field {
@@ -65,22 +69,21 @@
     .field label {
       display: block;
       margin-bottom: 6px;
-      color: #d8d8e6;
+      color: #d8d8d8;
+      font-weight: 700;
       font-size: 14px;
-      font-weight: 600;
     }
 
     .field input,
     .field textarea,
     .field select {
       width: 100%;
-      padding: 12px 14px;
+      background: #111;
+      border: 2px solid #323232;
       border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.1);
-      background: rgba(255,255,255,0.07);
       color: #fff;
+      padding: 12px;
       font-size: 15px;
-      outline: none;
     }
 
     .field textarea {
@@ -88,336 +91,289 @@
       resize: vertical;
     }
 
-    .row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .btns {
+    .buttons {
       display: flex;
-      gap: 10px;
       flex-wrap: wrap;
-      margin-top: 12px;
+      gap: 10px;
+      margin-top: 10px;
     }
 
     button {
       border: none;
       border-radius: 12px;
       padding: 12px 16px;
+      cursor: pointer;
       font-size: 15px;
       font-weight: 700;
-      cursor: pointer;
     }
 
     .primary {
-      background: #7c4dff;
-      color: white;
+      background: #71aa34;
+      color: #fff;
     }
 
     .secondary {
-      background: rgba(255,255,255,0.1);
-      color: white;
+      background: #2c2c2c;
+      color: #fff;
     }
 
-    .preview-area {
+    .hint {
+      margin-top: 12px;
+      color: #a9a9a9;
+      font-size: 13px;
+    }
+
+    .preview-box {
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 16px;
     }
 
     .achievement-card {
       width: 100%;
-      min-height: 240px;
-      border-radius: 20px;
-      padding: 22px;
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      max-width: 520px;
+      min-height: 150px;
+      background: linear-gradient(180deg, #4d3317, #2f1f0f);
+      border: 4px solid #24180b;
+      box-shadow:
+        inset 0 0 0 4px #7d5a30,
+        0 10px 24px rgba(0,0,0,0.35);
+      border-radius: 6px;
+      padding: 16px;
+      font-family: "Courier New", monospace;
+      image-rendering: pixelated;
     }
 
-    .card-top {
+    .achievement-top {
+      color: #ffff66;
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 0 #3a2c10;
+    }
+
+    .achievement-content {
       display: flex;
-      gap: 16px;
       align-items: flex-start;
+      gap: 14px;
     }
 
-    .icon-box {
-      width: 84px;
-      height: 84px;
-      border-radius: 18px;
+    .achievement-icon {
+      width: 72px;
+      height: 72px;
+      flex-shrink: 0;
+      background: #7bbf43;
+      border: 3px solid #274913;
+      border-radius: 4px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 42px;
-      flex-shrink: 0;
+      font-size: 34px;
+      overflow: hidden;
     }
 
-    .text-box {
-      min-width: 0;
+    .achievement-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+
+    .achievement-text {
       flex: 1;
+      min-width: 0;
     }
 
-    .ach-label {
-      font-size: 13px;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      opacity: 0.85;
-      margin-bottom: 8px;
-      font-weight: 700;
-    }
-
-    .ach-title {
-      font-size: 28px;
+    .achievement-title {
+      font-size: 24px;
       font-weight: 900;
+      color: #ffffff;
       line-height: 1.1;
       margin-bottom: 8px;
       word-break: break-word;
+      text-shadow: 2px 2px 0 #2b1e0d;
     }
 
-    .ach-desc {
+    .achievement-desc {
       font-size: 15px;
-      line-height: 1.45;
-      opacity: 0.95;
+      line-height: 1.35;
+      color: #f0f0f0;
       word-break: break-word;
+      text-shadow: 1px 1px 0 #2b1e0d;
     }
 
-    .card-bottom {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      align-items: end;
-      margin-top: 18px;
-      flex-wrap: wrap;
-    }
-
-    .date-pill, .rarity-pill {
-      padding: 9px 12px;
-      border-radius: 999px;
+    .type-note {
       font-size: 13px;
-      font-weight: 700;
-    }
-
-    .steam {
-      background: linear-gradient(135deg, #0d1b2a, #1b263b 60%, #415a77);
-      border: 1px solid rgba(122, 192, 255, 0.3);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
-    }
-
-    .steam .icon-box {
-      background: linear-gradient(135deg, #1f3d5a, #4c7ea8);
-      box-shadow: inset 0 0 20px rgba(255,255,255,0.12);
-    }
-
-    .steam .date-pill,
-    .steam .rarity-pill {
-      background: rgba(255,255,255,0.12);
-    }
-
-    .minecraft {
-      background: linear-gradient(180deg, #5d3a1a, #3d2813);
-      border: 4px solid #24180c;
-      box-shadow: inset 0 0 0 4px #7a5a30;
-      border-radius: 6px;
-      font-family: "Courier New", monospace;
-    }
-
-    .minecraft .icon-box {
-      border-radius: 4px;
-      background: #7bbf43;
-      border: 3px solid #2b4d14;
-    }
-
-    .minecraft .date-pill,
-    .minecraft .rarity-pill {
-      background: #2f2113;
-      border: 2px solid #7a5a30;
-      border-radius: 4px;
-    }
-
-    .custom {
-      background: radial-gradient(circle at top right, rgba(191,120,255,0.35), transparent 30%),
-                  linear-gradient(135deg, #1a1027, #2b123c 55%, #120c1c);
-      border: 1px solid rgba(207, 123, 255, 0.35);
-      box-shadow: 0 0 30px rgba(143, 59, 255, 0.18);
-    }
-
-    .custom .icon-box {
-      background: linear-gradient(135deg, #6e2edb, #b155ff);
-      box-shadow: 0 0 20px rgba(177,85,255,0.4);
-    }
-
-    .custom .date-pill,
-    .custom .rarity-pill {
-      background: rgba(255,255,255,0.09);
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .footer-note {
-      font-size: 13px;
-      color: #a9a9bc;
-      margin-top: 6px;
+      color: #bababa;
     }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <div class="title">UNLOCKD</div>
-    <div class="subtitle">Создай свою ачивку и скачай её как PNG</div>
+    <h1 class="logo">UNLOCKD</h1>
+    <p class="subtitle">Minecraft achievement generator — первая версия</p>
 
-    <div class="grid">
+    <div class="layout">
       <div class="panel">
         <h2>Настройки</h2>
 
         <div class="field">
-          <label for="style">Стиль</label>
-          <select id="style">
-            <option value="steam">Steam</option>
-            <option value="minecraft">Minecraft</option>
-            <option value="custom">Custom / Purple</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label for="icon">Иконка / emoji</label>
-          <input id="icon" type="text" value="🏆" placeholder="например: 🏆 ✨ 🧙 💜" />
-        </div>
-
-        <div class="field">
           <label for="titleInput">Название достижения</label>
-          <input id="titleInput" type="text" value="Первый шаг" placeholder="Введите название" />
+          <input id="titleInput" type="text" value="Начало пути" placeholder="Введите название" />
         </div>
 
         <div class="field">
           <label for="descInput">Описание</label>
-          <textarea id="descInput" placeholder="Введите описание">Начало чего-то классного. Ты успешно открыла свой первый проект.</textarea>
+          <textarea id="descInput" placeholder="Введите описание">Ты сделал первый шаг и открыл свою первую ачивку.</textarea>
         </div>
 
-        <div class="row">
-          <div class="field">
-            <label for="dateInput">Дата</label>
-            <input id="dateInput" type="text" value="25.09.2026" placeholder="например: 25.09.2026" />
-          </div>
-
-          <div class="field">
-            <label for="rarityInput">Редкость / подпись</label>
-            <input id="rarityInput" type="text" value="COMMON" placeholder="например: RARE" />
-          </div>
+        <div class="field">
+          <label for="typeInput">Тип</label>
+          <select id="typeInput">
+            <option value="achievement">Обычное достижение</option>
+            <option value="goal">Цель</option>
+            <option value="challenge">Испытание</option>
+          </select>
         </div>
 
-        <div class="btns">
+        <div class="field">
+          <label for="emojiInput">Иконка / emoji</label>
+          <input id="emojiInput" type="text" value="⛏️" placeholder="например: ⛏️ 💎 🌾 🧱" />
+        </div>
+
+        <div class="field">
+          <label for="imageInput">Или загрузи свою картинку</label>
+          <input id="imageInput" type="file" accept="image/*" />
+        </div>
+
+        <div class="buttons">
           <button class="primary" id="downloadBtn">Скачать PNG</button>
-          <button class="secondary" id="randomBtn">Случайный пример</button>
+          <button class="secondary" id="resetBtn">Сбросить пример</button>
         </div>
 
-        <div class="footer-note">
-          если хочешь, потом добавим загрузку своей картинки вместо emoji
+        <div class="hint">
+          сначала можно пользоваться emoji, а потом улучшим проект и добавим больше minecraft-иконок и стилей
         </div>
       </div>
 
-      <div class="panel preview-area">
+      <div class="panel preview-box">
         <h2>Предпросмотр</h2>
 
-        <div id="achievementCard" class="achievement-card steam">
-          <div class="card-top">
-            <div class="icon-box" id="iconPreview">🏆</div>
+        <div id="achievementCard" class="achievement-card">
+          <div id="topLabel" class="achievement-top">Achievement Get!</div>
 
-            <div class="text-box">
-              <div class="ach-label">Achievement unlocked</div>
-              <div class="ach-title" id="titlePreview">Первый шаг</div>
-              <div class="ach-desc" id="descPreview">
-                Начало чего-то классного. Ты успешно открыла свой первый проект.
+          <div class="achievement-content">
+            <div class="achievement-icon" id="iconBox">
+              <span id="emojiPreview">⛏️</span>
+              <img id="imagePreview" alt="icon" />
+            </div>
+
+            <div class="achievement-text">
+              <div class="achievement-title" id="titlePreview">Начало пути</div>
+              <div class="achievement-desc" id="descPreview">
+                Ты сделал первый шаг и открыл свою первую ачивку.
               </div>
             </div>
           </div>
+        </div>
 
-          <div class="card-bottom">
-            <div class="date-pill" id="datePreview">25.09.2026</div>
-            <div class="rarity-pill" id="rarityPreview">COMMON</div>
-          </div>
+        <div class="type-note" id="typeNote">
+          Тип: обычное достижение
         </div>
       </div>
     </div>
   </div>
 
   <script>
-    const styleEl = document.getElementById('style');
-    const iconEl = document.getElementById('icon');
-    const titleEl = document.getElementById('titleInput');
-    const descEl = document.getElementById('descInput');
-    const dateEl = document.getElementById('dateInput');
-    const rarityEl = document.getElementById('rarityInput');
+    const titleInput = document.getElementById("titleInput");
+    const descInput = document.getElementById("descInput");
+    const typeInput = document.getElementById("typeInput");
+    const emojiInput = document.getElementById("emojiInput");
+    const imageInput = document.getElementById("imageInput");
 
-    const card = document.getElementById('achievementCard');
-    const iconPreview = document.getElementById('iconPreview');
-    const titlePreview = document.getElementById('titlePreview');
-    const descPreview = document.getElementById('descPreview');
-    const datePreview = document.getElementById('datePreview');
-    const rarityPreview = document.getElementById('rarityPreview');
+    const topLabel = document.getElementById("topLabel");
+    const titlePreview = document.getElementById("titlePreview");
+    const descPreview = document.getElementById("descPreview");
+    const emojiPreview = document.getElementById("emojiPreview");
+    const imagePreview = document.getElementById("imagePreview");
+    const typeNote = document.getElementById("typeNote");
 
-    function updatePreview() {
-      card.className = 'achievement-card ' + styleEl.value;
-      iconPreview.textContent = iconEl.value || '🏆';
-      titlePreview.textContent = titleEl.value || 'Без названия';
-      descPreview.textContent = descEl.value || 'Без описания';
-      datePreview.textContent = dateEl.value || 'Без даты';
-      rarityPreview.textContent = rarityEl.value || 'COMMON';
+    function getTypeData(type) {
+      if (type === "goal") {
+        return {
+          label: "Goal Reached!",
+          note: "Тип: цель"
+        };
+      }
+
+      if (type === "challenge") {
+        return {
+          label: "Challenge Complete!",
+          note: "Тип: испытание"
+        };
+      }
+
+      return {
+        label: "Achievement Get!",
+        note: "Тип: обычное достижение"
+      };
     }
 
-    [styleEl, iconEl, titleEl, descEl, dateEl, rarityEl].forEach(el => {
-      el.addEventListener('input', updatePreview);
-      el.addEventListener('change', updatePreview);
+    function updatePreview() {
+      const typeData = getTypeData(typeInput.value);
+
+      topLabel.textContent = typeData.label;
+      typeNote.textContent = typeData.note;
+      titlePreview.textContent = titleInput.value || "Без названия";
+      descPreview.textContent = descInput.value || "Без описания";
+      emojiPreview.textContent = emojiInput.value || "🏆";
+    }
+
+    titleInput.addEventListener("input", updatePreview);
+    descInput.addEventListener("input", updatePreview);
+    typeInput.addEventListener("change", updatePreview);
+    emojiInput.addEventListener("input", updatePreview);
+
+    imageInput.addEventListener("change", function () {
+      const file = this.files[0];
+      if (!file) {
+        imagePreview.style.display = "none";
+        emojiPreview.style.display = "inline";
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        imagePreview.src = e.target.result;
+        imagePreview.style.display = "block";
+        emojiPreview.style.display = "none";
+      };
+      reader.readAsDataURL(file);
     });
 
-    document.getElementById('randomBtn').addEventListener('click', () => {
-      const presets = [
-        {
-          style: 'steam',
-          icon: '🏆',
-          title: 'Первый запуск',
-          desc: 'Ты открыла приложение и начала свой путь.',
-          date: '25.09.2026',
-          rarity: 'COMMON'
-        },
-        {
-          style: 'minecraft',
-          icon: '⛏️',
-          title: 'Добытчик',
-          desc: 'Ты добыл свои первые ресурсы и готов идти дальше.',
-          date: '25.09.2026',
-          rarity: 'RARE'
-        },
-        {
-          style: 'custom',
-          icon: '🧙',
-          title: 'Ведьмина сила',
-          desc: 'Ты пробудила магию и собрала свой готический стиль.',
-          date: '25.09.2026',
-          rarity: 'EPIC'
-        }
-      ];
-
-      const item = presets[Math.floor(Math.random() * presets.length)];
-      styleEl.value = item.style;
-      iconEl.value = item.icon;
-      titleEl.value = item.title;
-      descEl.value = item.desc;
-      dateEl.value = item.date;
-      rarityEl.value = item.rarity;
+    document.getElementById("resetBtn").addEventListener("click", () => {
+      titleInput.value = "Начало пути";
+      descInput.value = "Ты сделал первый шаг и открыл свою первую ачивку.";
+      typeInput.value = "achievement";
+      emojiInput.value = "⛏️";
+      imageInput.value = "";
+      imagePreview.src = "";
+      imagePreview.style.display = "none";
+      emojiPreview.style.display = "inline";
       updatePreview();
     });
 
-    document.getElementById('downloadBtn').addEventListener('click', async () => {
+    document.getElementById("downloadBtn").addEventListener("click", async () => {
+      const card = document.getElementById("achievementCard");
+
       const canvas = await html2canvas(card, {
         backgroundColor: null,
         scale: 2
       });
 
-      const link = document.createElement('a');
-      link.download = 'achievement.png';
-      link.href = canvas.toDataURL('image/png');
+      const link = document.createElement("a");
+      link.download = "minecraft-achievement.png";
+      link.href = canvas.toDataURL("image/png");
       link.click();
     });
 
