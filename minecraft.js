@@ -3,7 +3,12 @@
 window.MinecraftToast = (() => {
   const load = path => { const image = new Image(); image.src = path; return image.decode().then(() => image); };
   let assets;
-  const ready = Promise.all(['achievement_background.png', 'toasts.png', 'ascii.png', 'unicode_page_04.png'].map(name => load('assets/minecraft/' + name))).then(images => {
+  const ready = Promise.all([
+    load('assets/minecraft/achievement_background.png'),
+    load('assets/minecraft/toasts.png'),
+    load('assets/minecraft/ascii.png'),
+    load('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAYAAABccqhmAAAE3klEQVR42u3d3W6bQBAG0LjK+79ye1NLVaWNYWdmf9hz7iLHNgHCfjvA8PWV5PdfrZ+B9fyyCgAA4CSvjLn/pS96vV5WN6gBAIv4TosSRniQAAA1AMkAJABADQCQAIDDagASAkgAAADAmjWA1py+NYePXgdQ/f6rn9P6vOrvf7///fqnn+8ux9X3XV2+q+4ud9b39+6/s17P2n69+9+3YyAlI4ui7xa+Px2pRlX5o0fQ6Pe3Rt7Vd/iqEbxqeao+J7r/Rrf/7O3Xm9CdBYCTE8DoEYJnRe3/95/WCBwdyasTx6cazFNJAKAGkDcS9I5Q0ffP1rv8rZEmWn2Prr/RI98qSXSX9SUBAHkJIHoEq65irp4EoiNH9DqA1nLMWn+9Z1F2rUn1VuElAGB+Atj1CHa67BEzWgXPup7C2SkJABiVAKrmfKufBWhV3++OsLN6I34aaUedT88esU9JAlnbTwIA6Bm5fhq9PeUYNQDgkV5Zc9dZ9zNX3U+e9fu7vX73OoSs9/fOeaN9B7LvXuzd/z/dxVhVg5IA4GCXrwOoen3VK9echx4UQTe/625UAu1NMPoBAJ8TQPURfpcj+N05bNY1/OydYHYlAYAEsO/9+KvMIWeN/E/rXNN7ViDrbEJ0/+/dDr3vi25/CQAkgP3nMtHnFkTPAsyuATzlbs7es0LRs0lZVfxoV+2sJHD18yQAkADq53RVI2F1V9je73c24AyrbN/e5ZAAQALIGzmvzq2y54xP7So8Okn11g6q+iqsfhYge/9rfV5Vz0wJAGCHhLDzuX59FdYkAQBgxAc4SlpFeVZXXNYb+W1vNQBgpwSQ3dNsVHKI9hSM/v3Z6y/aUy97+63+enQ7rLL8s3pqSgBwsHBPwKwroaqeLhyds44ewW5HuOKEtkst4Wp33btJbPbfmfV0bTUAoJ0Aop1MZs2BVhuxekfwrH4ET1l/o55p2NoOd5PArtc8SABwcgKIVpmr57Kj5tDRvzOrBtHbWWjW+qva/rOWu/f7du3IJAHAyQkguxdZ7xF19hw2u6fgqL8j+r3V2z97Tv40s/tZSABwsOOv13YPAyeTAAAAAADg4V5ZVfBZ9zOvcj929vLdXe5d7+fP6uffu56yrjPI3n/urpfe/2NnAeBg4X4A0ddnXwMevRY/eg3/arI6PN3tA/F+X1aSHPVkoKqORlf/L6L38kgAIAEUFhkOuZJu1sg/uoPNrP2lOklmf29WDaF6+0sAIAGsO6esPgJmd+SZnQSyRhb69u/eRNC7H6sBAPEEsMrz0WeNgL0jd+v3735eazlHJYlWAsp6/+j++KPOAmTv/63Pq9r+EgAc7LV7x5Wn38//lI44nhm4JgkAyDnC/zsaez48SAAAAMBS0iqyuz+bDtQAAO6O/D9V+50NAAkAWFDa3YBGeZAAgBMTgGo/SADARsqvA5AQQAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABu+QMM8qUgD0FpmQAAAABJRU5ErkJggg==')
+  ]).then(images => {
     assets = images;
     return images;
   });
