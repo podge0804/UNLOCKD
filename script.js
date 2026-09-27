@@ -14,7 +14,7 @@ let platform = 'minecraft';
 let renderRevision = 0;
 function minecraftState() {
   return {heading:$('eyebrowInput').value,title:$('titleInput').value || 'Без названия',description:$('descriptionInput').value,
-    extended:$('extendedMode').checked,modern:$('toastStyle').value!=='classic',challenge:$('toastStyle').value==='challenge',
+    extended:$('toastStyle').value !== 'classic' && $('extendedMode').checked,modern:$('toastStyle').value!=='classic',challenge:$('toastStyle').value==='challenge',
     icon:image.src,custom:source==='upload',emoji:source==='emoji'?$('emojiInput').value:''};
 }
 function renderMinecraft() {
@@ -38,15 +38,26 @@ function status(message, error = false) {
 function fitPreview() {
   const stage = document.querySelector('.preview-stage');
   const padding = parseFloat(getComputedStyle(stage).paddingLeft) * 2 + 2;
-  const scale = Math.min(1, (stage.clientWidth - padding) / achievement.offsetWidth);
-  achievement.style.transform = 'scale(' + scale + ')';
-  $('previewSizer').style.width = achievement.offsetWidth * scale + 'px';
-  $('previewSizer').style.height = achievement.offsetHeight * scale + 'px';
+  const target = platform === 'minecraft' ? $('minecraftToast') : achievement;
+  const width = platform === 'minecraft' ? $('minecraftPreview').width : target.offsetWidth;
+  const height = platform === 'minecraft' ? $('minecraftPreview').height : target.offsetHeight;
+  if (platform === 'minecraft') {
+    target.style.width = width + 'px';
+    target.style.height = height + 'px';
+  }
+  const scale = Math.max(0, Math.min(platform === 'minecraft' ? 2 : 1, (stage.clientWidth - padding) / width));
+  target.style.transformOrigin = 'top left';
+  target.style.transform = 'scale(' + scale + ')';
+  $('previewSizer').style.width = width * scale + 'px';
+  $('previewSizer').style.height = height * scale + 'px';
 }
 function updatePreview() {
-  achievement.className = 'achievement ' + platform;
+  // The DOM toast is Steam-only. Native hidden attributes also protect mixed CSS caches.
+  achievement.hidden = platform === 'minecraft';
+  $('minecraftToast').hidden = platform !== 'minecraft';
   $('minecraftOptions').hidden = platform !== 'minecraft';
-  $('descriptionInput').disabled = platform === 'minecraft' && !$('extendedMode').checked;
+  $('extendedMode').disabled = $('toastStyle').value === 'classic';
+  $('descriptionInput').disabled = platform === 'minecraft' && ($('toastStyle').value === 'classic' || !$('extendedMode').checked);
   if (platform === 'minecraft') renderMinecraft();
   $('eyebrow').textContent = $('eyebrowInput').value;
   $('titlePreview').textContent = $('titleInput').value || 'Без названия';
@@ -233,6 +244,7 @@ async function savePNG(canvas,filePlatform) {
 }
 new ResizeObserver(fitPreview).observe(document.querySelector('.preview-stage'));
 new ResizeObserver(fitPreview).observe(achievement);
+new ResizeObserver(fitPreview).observe($('minecraftToast'));
 document.fonts.ready.then(fitPreview);
 updatePreview();
 loadItems();

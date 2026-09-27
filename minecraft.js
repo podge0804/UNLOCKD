@@ -70,7 +70,7 @@ window.MinecraftToast = (() => {
     await ready;
     let icon=null;
     if(!state.emoji) icon=await load(state.icon);
-    const extra=state.extended && state.description ? lines(state.description,248) : [];
+    const extra=state.modern && state.extended && state.description ? lines(state.description,248) : [];
     const canvas=document.createElement('canvas'); canvas.width=320;canvas.height=64+extra.length*18;
     const ctx=canvas.getContext('2d');ctx.imageSmoothingEnabled=false;
     frame(ctx,state.modern,canvas.height);

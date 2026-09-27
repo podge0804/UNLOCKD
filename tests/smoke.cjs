@@ -65,6 +65,8 @@ const server = http.createServer((req,res) => {
     await page.selectOption('#platform','steam'); assert.equal(await page.locator('#eyebrow').textContent(),'ACHIEVEMENT UNLOCKED');
     await download('steam',1680);
     await page.selectOption('#platform','minecraft');
+    assert.equal(await page.locator('#extendedMode').isDisabled(),true);
+    await page.selectOption('#toastStyle','modern');
     await page.fill('#titleInput','Я'.repeat(60));
     await page.check('#extendedMode');await page.fill('#descriptionInput','Ы'.repeat(140));await page.uncheck('#extendedMode');
     await download('long-text',960);
@@ -74,10 +76,36 @@ const server = http.createServer((req,res) => {
     for(const style of ['modern','challenge','classic']) { await page.selectOption('#toastStyle',style); await download(style,960); }
     assert.equal(await page.evaluate(()=>document.querySelector('.achievement-text').scrollWidth<=document.querySelector('.achievement-text').clientWidth),true);
     for (const width of [320,390,768,1024]) { await page.setViewportSize({width,height:900}); assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true); }
+    // A stale stylesheet used to place canvas + legacy text side by side in flex.
+    // Simulate the old CSS explicitly, even though production URLs are now versioned.
+    assert.match(await page.locator('link[rel="stylesheet"]').getAttribute('href'),/\?v=/);
+    const legacyCSS = require('node:child_process').execFileSync('git',['show','3d0e2ad:style.css'],{cwd:root,encoding:'utf8'});
+    for (const stale of [false,true]) {
+      if(stale) await page.route('**/style.css*',route=>route.fulfill({contentType:'text/css',body:legacyCSS}));
+      await page.reload();
+      await page.waitForFunction(()=>document.querySelectorAll('.item').length===32);
+      for(const viewport of [1440,375]) {
+        await page.setViewportSize({width:viewport,height:900});
+        for(const [heading,title,icon] of [['Achievement Get!','Diamonds!','diamond'],['Достижение получено!','Очень длинное русское название достижения без переноса букв','iron_pickaxe']]) {
+          await page.fill('#eyebrowInput',heading);await page.fill('#titleInput',title);
+          await page.locator('[data-id="'+icon+'"]').click();
+          await page.waitForFunction(title=>document.querySelector('#minecraftPreview').getAttribute('aria-label').includes(title),title);
+          const geometry=await page.evaluate(()=>{const c=document.querySelector('#minecraftPreview'),r=c.getBoundingClientRect();return {width:c.width,height:c.height,ratio:r.width/r.height,legacyHidden:document.querySelector('#achievement').hidden,canvasOutsideLegacy:!document.querySelector('#achievement').contains(c)};});
+          assert.deepEqual({...geometry,ratio:Math.round(geometry.ratio*100)/100},{width:320,height:64,ratio:5,legacyHidden:true,canvasOutsideLegacy:true});
+          const png=await download('isolation-'+stale+'-'+viewport+'-'+icon,960);assert.equal(png.readUInt32BE(20),192);
+        }
+        await page.evaluate(()=>window.scrollTo(0,0));
+        await page.screenshot({path:'/tmp/unlockd-isolation-'+stale+'-'+viewport+'.png',fullPage:true});
+      }
+      // Even stale checked state must not enable a description in Java 1.8.
+      const size=await page.evaluate(async()=>{const {canvas}=await MinecraftToast.render({heading:'Achievement Get!',title:'Diamonds!',icon:'assets/items/diamond.png',modern:false,extended:true,description:'Must not be inside classic toast'});return [canvas.width,canvas.height];});
+      assert.deepEqual(size,[320,64]);
+    }
+    await page.unroute('**/style.css*');
     assert.deepEqual(errors,[]);
     await page.route('**/items.json',route=>route.abort()); await page.reload();
     await page.waitForFunction(()=>document.querySelector('#searchStatus').textContent.includes('Каталог недоступен'));
     await download('fallback',960);
-    console.log('PASS: 32 icons; EN/RU/empty search; selection; safe live text; font; desktop/mobile identical PNG; upload/reset/invalid upload; emoji; Steam; long text; 320–1440px; catalog failure; no JS errors.');
+    console.log('PASS: 8 desktop/mobile + EN/RU + fresh/stale CSS cases; isolated 5:1 canvas; classic description guard; 32 icons; EN/RU/empty search; selection; safe live text; font; desktop/mobile identical PNG; upload/reset/invalid upload; emoji; Steam; long text; 320–1440px; catalog failure; no JS errors.');
   } finally { await browser.close(); server.close(); }
 })().catch(error=>{ console.error(error); server.close(); process.exitCode=1; });

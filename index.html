@@ -6,10 +6,10 @@
   <meta name="theme-color" content="#100d1b">
   <meta name="description" content="Создай своё Minecraft-достижение: выбери предмет, добавь текст и скачай PNG бесплатно.">
   <title>UNLOCKD — создай своё достижение</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=toast-isolation-1">
   <script defer src="assets/vendor/html2canvas.min.js"></script>
-  <script defer src="minecraft.js"></script>
-  <script defer src="script.js"></script>
+  <script defer src="minecraft.js?v=toast-isolation-1"></script>
+  <script defer src="script.js?v=toast-isolation-1"></script>
 </head>
 <body>
 <main class="page">
@@ -36,8 +36,9 @@
     </section>
     <section class="preview-wrap" aria-labelledby="previewHeading">
       <div class="panel preview-panel"><div class="section-heading"><h2 id="previewHeading">Предпросмотр</h2><span class="live"><i></i> LIVE</span></div>
-        <div class="preview-stage"><div id="previewSizer"><div id="achievement" class="achievement minecraft">
-          <canvas id="minecraftPreview" width="320" height="64" role="img" aria-label="Minecraft-достижение"></canvas>
+        <div class="preview-stage"><div id="previewSizer">
+          <div id="minecraftToast"><canvas id="minecraftPreview" width="320" height="64" role="img" aria-label="Minecraft-достижение"></canvas></div>
+          <div id="achievement" class="achievement steam" hidden>
           <div class="achievement-icon"><img id="imagePreview" src="assets/items/diamond.png" alt=""><span id="emojiPreview" hidden></span></div>
           <div class="achievement-text"><div id="eyebrow" class="eyebrow">Achievement Get!</div><div id="titlePreview" class="achievement-title">Алмазы!</div><div id="descriptionPreview" class="achievement-description">Добудьте алмазы с помощью железной кирки.</div></div>
         </div></div></div>
