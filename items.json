@@ -1,0 +1,262 @@
+{
+  "version": 1,
+  "minecraftVersion": "1.20.2",
+  "items": [
+    {
+      "id": "diamond",
+      "names": {
+        "en": "Diamond",
+        "ru": "Алмаз"
+      },
+      "icon": "assets/items/diamond.png"
+    },
+    {
+      "id": "diamond_sword",
+      "names": {
+        "en": "Diamond Sword",
+        "ru": "Алмазный меч"
+      },
+      "icon": "assets/items/diamond_sword.png"
+    },
+    {
+      "id": "diamond_pickaxe",
+      "names": {
+        "en": "Diamond Pickaxe",
+        "ru": "Алмазная кирка"
+      },
+      "icon": "assets/items/diamond_pickaxe.png"
+    },
+    {
+      "id": "emerald",
+      "names": {
+        "en": "Emerald",
+        "ru": "Изумруд"
+      },
+      "icon": "assets/items/emerald.png"
+    },
+    {
+      "id": "iron_ingot",
+      "names": {
+        "en": "Iron Ingot",
+        "ru": "Железный слиток"
+      },
+      "icon": "assets/items/iron_ingot.png"
+    },
+    {
+      "id": "gold_ingot",
+      "names": {
+        "en": "Gold Ingot",
+        "ru": "Золотой слиток"
+      },
+      "icon": "assets/items/gold_ingot.png"
+    },
+    {
+      "id": "netherite_ingot",
+      "names": {
+        "en": "Netherite Ingot",
+        "ru": "Незеритовый слиток"
+      },
+      "icon": "assets/items/netherite_ingot.png"
+    },
+    {
+      "id": "coal",
+      "names": {
+        "en": "Coal",
+        "ru": "Уголь"
+      },
+      "icon": "assets/items/coal.png"
+    },
+    {
+      "id": "apple",
+      "names": {
+        "en": "Apple",
+        "ru": "Яблоко"
+      },
+      "icon": "assets/items/apple.png"
+    },
+    {
+      "id": "golden_apple",
+      "names": {
+        "en": "Golden Apple",
+        "ru": "Золотое яблоко"
+      },
+      "icon": "assets/items/golden_apple.png"
+    },
+    {
+      "id": "bread",
+      "names": {
+        "en": "Bread",
+        "ru": "Хлеб"
+      },
+      "icon": "assets/items/bread.png"
+    },
+    {
+      "id": "carrot",
+      "names": {
+        "en": "Carrot",
+        "ru": "Морковь"
+      },
+      "icon": "assets/items/carrot.png"
+    },
+    {
+      "id": "bow",
+      "names": {
+        "en": "Bow",
+        "ru": "Лук"
+      },
+      "icon": "assets/items/bow.png"
+    },
+    {
+      "id": "arrow",
+      "names": {
+        "en": "Arrow",
+        "ru": "Стрела"
+      },
+      "icon": "assets/items/arrow.png"
+    },
+    {
+      "id": "iron_sword",
+      "names": {
+        "en": "Iron Sword",
+        "ru": "Железный меч"
+      },
+      "icon": "assets/items/iron_sword.png"
+    },
+    {
+      "id": "iron_pickaxe",
+      "names": {
+        "en": "Iron Pickaxe",
+        "ru": "Железная кирка"
+      },
+      "icon": "assets/items/iron_pickaxe.png"
+    },
+    {
+      "id": "wooden_pickaxe",
+      "names": {
+        "en": "Wooden Pickaxe",
+        "ru": "Деревянная кирка"
+      },
+      "icon": "assets/items/wooden_pickaxe.png"
+    },
+    {
+      "id": "stone_pickaxe",
+      "names": {
+        "en": "Stone Pickaxe",
+        "ru": "Каменная кирка"
+      },
+      "icon": "assets/items/stone_pickaxe.png"
+    },
+    {
+      "id": "ender_pearl",
+      "names": {
+        "en": "Ender Pearl",
+        "ru": "Эндер-жемчуг"
+      },
+      "icon": "assets/items/ender_pearl.png"
+    },
+    {
+      "id": "ender_eye",
+      "names": {
+        "en": "Ender Eye",
+        "ru": "Око Эндера"
+      },
+      "icon": "assets/items/ender_eye.png"
+    },
+    {
+      "id": "totem_of_undying",
+      "names": {
+        "en": "Totem Of Undying",
+        "ru": "Тотем бессмертия"
+      },
+      "icon": "assets/items/totem_of_undying.png"
+    },
+    {
+      "id": "elytra",
+      "names": {
+        "en": "Elytra",
+        "ru": "Элитры"
+      },
+      "icon": "assets/items/elytra.png"
+    },
+    {
+      "id": "book",
+      "names": {
+        "en": "Book",
+        "ru": "Книга"
+      },
+      "icon": "assets/items/book.png"
+    },
+    {
+      "id": "enchanted_book",
+      "names": {
+        "en": "Enchanted Book",
+        "ru": "Зачарованная книга"
+      },
+      "icon": "assets/items/enchanted_book.png"
+    },
+    {
+      "id": "experience_bottle",
+      "names": {
+        "en": "Experience Bottle",
+        "ru": "Пузырёк опыта"
+      },
+      "icon": "assets/items/experience_bottle.png"
+    },
+    {
+      "id": "slime_ball",
+      "names": {
+        "en": "Slime Ball",
+        "ru": "Сгусток слизи"
+      },
+      "icon": "assets/items/slime_ball.png"
+    },
+    {
+      "id": "redstone",
+      "names": {
+        "en": "Redstone",
+        "ru": "Редстоун"
+      },
+      "icon": "assets/items/redstone.png"
+    },
+    {
+      "id": "lapis_lazuli",
+      "names": {
+        "en": "Lapis Lazuli",
+        "ru": "Лазурит"
+      },
+      "icon": "assets/items/lapis_lazuli.png"
+    },
+    {
+      "id": "amethyst_shard",
+      "names": {
+        "en": "Amethyst Shard",
+        "ru": "Осколок аметиста"
+      },
+      "icon": "assets/items/amethyst_shard.png"
+    },
+    {
+      "id": "trident",
+      "names": {
+        "en": "Trident",
+        "ru": "Трезубец"
+      },
+      "icon": "assets/items/trident.png"
+    },
+    {
+      "id": "fishing_rod",
+      "names": {
+        "en": "Fishing Rod",
+        "ru": "Удочка"
+      },
+      "icon": "assets/items/fishing_rod.png"
+    },
+    {
+      "id": "water_bucket",
+      "names": {
+        "en": "Water Bucket",
+        "ru": "Ведро воды"
+      },
+      "icon": "assets/items/water_bucket.png"
+    }
+  ]
+}
