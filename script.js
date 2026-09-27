@@ -8,6 +8,7 @@ let source = 'item';
 let customURL = null;
 let revision = 0;
 let exporting = false;
+let copying = false;
 const defaults = { minecraft: 'Achievement Get!', steam: 'ACHIEVEMENT UNLOCKED' };
 const headings = { ...defaults };
 let platform = 'minecraft';
@@ -181,34 +182,31 @@ $('imageInput').addEventListener('change', async () => {
   }
 });
 image.addEventListener('error', () => status('Не удалось загрузить иконку. Выбери другой предмет или свою картинку.', true));
-$('downloadBtn').addEventListener('click', async () => {
-  if (exporting) return;
-  exporting = true;
-  $('downloadBtn').disabled = true;
-  status('Готовим PNG…');
-  let holder;
+async function createExportCanvas() {
+  const filePlatform = platform;
+  const state = filePlatform === 'minecraft' ? minecraftState() : null;
+  if (state) {
+    const {canvas:original} = await MinecraftToast.render(state);
+    const output = document.createElement('canvas');
+    output.width = original.width * 3;
+    output.height = original.height * 3;
+    const ctx = output.getContext('2d');
+    ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(original, 0, 0, output.width, output.height);
+    return { canvas: output, filePlatform };
+  }
+
+  await document.fonts.ready;
+  const holder = document.createElement('div');
+  holder.style.cssText = 'position:fixed;left:-10000px;top:0;width:600px;pointer-events:none';
+  const snapshot = achievement.cloneNode(true);
+  snapshot.style.transform = 'none';
+  holder.append(snapshot);
+  document.body.append(holder);
   try {
-    const filePlatform = platform;
-    const state = filePlatform === 'minecraft' ? minecraftState() : null;
-    if (state) {
-      const {canvas:original} = await MinecraftToast.render(state);
-      const output = document.createElement('canvas');output.width=original.width*3;output.height=original.height*3;
-      const ctx=output.getContext('2d');ctx.imageSmoothingEnabled=false;ctx.drawImage(original,0,0,output.width,output.height);
-      await savePNG(output,filePlatform);
-      return;
-    }
-    await document.fonts.ready;
-    // Snapshot is independent of responsive preview scaling and subsequent edits.
-    holder = document.createElement('div');
-    holder.style.cssText = 'position:fixed;left:-10000px;top:0;width:600px;pointer-events:none';
-    const snapshot = achievement.cloneNode(true);
-    snapshot.style.transform = 'none';
-    holder.append(snapshot);
-    document.body.append(holder);
     const snapshotImage = snapshot.querySelector('img');
     if (!snapshotImage.hidden) {
       await snapshotImage.decode();
-      // Bake the icon at export resolution with nearest-neighbor pixels.
       const iconCanvas = document.createElement('canvas');
       iconCanvas.width = iconCanvas.height = 168;
       const ctx = iconCanvas.getContext('2d');
@@ -220,15 +218,51 @@ $('downloadBtn').addEventListener('click', async () => {
       await snapshotImage.decode();
     }
     const canvas = await html2canvas(snapshot, { scale: 3, backgroundColor: null, logging: false });
-    await savePNG(canvas,filePlatform);
+    return { canvas, filePlatform };
+  } finally {
+    holder.remove();
+  }
+}
+
+$('downloadBtn').addEventListener('click', async () => {
+  if (exporting) return;
+  exporting = true;
+  $('downloadBtn').disabled = true;
+  status('Готовим PNG…');
+  try {
+    const {canvas, filePlatform} = await createExportCanvas();
+    await savePNG(canvas, filePlatform);
   } catch {
     status('Не удалось создать PNG. Проверь иконку и попробуй ещё раз.', true);
   } finally {
-    holder?.remove();
     exporting = false;
     $('downloadBtn').disabled = false;
   }
 });
+
+$('copyBtn').addEventListener('click', async () => {
+  if (copying) return;
+  if (!navigator.clipboard || typeof ClipboardItem === 'undefined') {
+    status('Копирование изображения не поддерживается этим браузером.', true);
+    return;
+  }
+  copying = true;
+  $('copyBtn').disabled = true;
+  status('Копируем…');
+  try {
+    const {canvas} = await createExportCanvas();
+    const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+    if (!blob) throw new Error('Empty export');
+    await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+    status('Скопировано.');
+  } catch {
+    status('Не удалось скопировать изображение.', true);
+  } finally {
+    copying = false;
+    $('copyBtn').disabled = false;
+  }
+});
+
 async function savePNG(canvas,filePlatform) {
     const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
     if (!blob) throw new Error('Empty export');
