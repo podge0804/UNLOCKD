@@ -11,6 +11,25 @@ let exporting = false;
 const defaults = { minecraft: 'Achievement Get!', steam: 'ACHIEVEMENT UNLOCKED' };
 const headings = { ...defaults };
 let platform = 'minecraft';
+let renderRevision = 0;
+function minecraftState() {
+  return {heading:$('eyebrowInput').value,title:$('titleInput').value || 'Без названия',description:$('descriptionInput').value,
+    extended:$('extendedMode').checked,modern:$('toastStyle').value!=='classic',challenge:$('toastStyle').value==='challenge',
+    icon:image.src,custom:source==='upload',emoji:source==='emoji'?$('emojiInput').value:''};
+}
+function renderMinecraft() {
+  const currentRender = renderRevision + 1;
+  renderRevision = currentRender;
+  const state=minecraftState();
+  MinecraftToast.render(state).then(({canvas,truncated})=>{
+    if(currentRender!==renderRevision) return;
+    const preview=$('minecraftPreview');preview.width=canvas.width;preview.height=canvas.height;
+    preview.getContext('2d').drawImage(canvas,0,0);
+    preview.setAttribute('aria-label',state.heading+' '+state.title+(state.extended?' '+state.description:''));
+    $('toastHint').textContent=truncated?'Длинный текст сокращён многоточием, чтобы сохранить игровые пропорции.':'Оригинальные пропорции 160 × 32. Две строки, как в игре.';
+    fitPreview();
+  }).catch(()=>status('Не удалось отрисовать Minecraft-плашку. Проверь загрузку иконки.',true));
+}
 
 function status(message, error = false) {
   $('appStatus').textContent = message;
@@ -26,6 +45,9 @@ function fitPreview() {
 }
 function updatePreview() {
   achievement.className = 'achievement ' + platform;
+  $('minecraftOptions').hidden = platform !== 'minecraft';
+  $('descriptionInput').disabled = platform === 'minecraft' && !$('extendedMode').checked;
+  if (platform === 'minecraft') renderMinecraft();
   $('eyebrow').textContent = $('eyebrowInput').value;
   $('titlePreview').textContent = $('titleInput').value || 'Без названия';
   $('descriptionPreview').textContent = $('descriptionInput').value;
@@ -100,6 +122,11 @@ $('platform').addEventListener('change', () => {
   $('eyebrowInput').value = headings[platform];
   updatePreview();
 });
+$('extendedMode').addEventListener('change', updatePreview);
+$('toastStyle').addEventListener('change', () => {
+  $('eyebrowInput').value = {classic:'Achievement Get!',modern:'Advancement Made!',challenge:'Challenge Complete!'}[$('toastStyle').value];
+  updatePreview();
+});
 $('itemSearch').addEventListener('input', renderItems);
 $('clearImageBtn').addEventListener('click', () => useItem());
 $('emojiInput').addEventListener('input', () => {
@@ -150,12 +177,20 @@ $('downloadBtn').addEventListener('click', async () => {
   status('Готовим PNG…');
   let holder;
   try {
+    const filePlatform = platform;
+    const state = filePlatform === 'minecraft' ? minecraftState() : null;
+    if (state) {
+      const {canvas:original} = await MinecraftToast.render(state);
+      const output = document.createElement('canvas');output.width=original.width*3;output.height=original.height*3;
+      const ctx=output.getContext('2d');ctx.imageSmoothingEnabled=false;ctx.drawImage(original,0,0,output.width,output.height);
+      await savePNG(output,filePlatform);
+      return;
+    }
     await document.fonts.ready;
     // Snapshot is independent of responsive preview scaling and subsequent edits.
     holder = document.createElement('div');
     holder.style.cssText = 'position:fixed;left:-10000px;top:0;width:600px;pointer-events:none';
     const snapshot = achievement.cloneNode(true);
-    const filePlatform = platform;
     snapshot.style.transform = 'none';
     holder.append(snapshot);
     document.body.append(holder);
@@ -174,6 +209,16 @@ $('downloadBtn').addEventListener('click', async () => {
       await snapshotImage.decode();
     }
     const canvas = await html2canvas(snapshot, { scale: 3, backgroundColor: null, logging: false });
+    await savePNG(canvas,filePlatform);
+  } catch {
+    status('Не удалось создать PNG. Проверь иконку и попробуй ещё раз.', true);
+  } finally {
+    holder?.remove();
+    exporting = false;
+    $('downloadBtn').disabled = false;
+  }
+});
+async function savePNG(canvas,filePlatform) {
     const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
     if (!blob) throw new Error('Empty export');
     const url = URL.createObjectURL(blob);
@@ -185,14 +230,7 @@ $('downloadBtn').addEventListener('click', async () => {
     link.remove();
     setTimeout(() => URL.revokeObjectURL(url), 60000);
     status('PNG готов: ' + canvas.width + ' × ' + canvas.height + ' px.');
-  } catch {
-    status('Не удалось создать PNG. Проверь иконку и попробуй ещё раз.', true);
-  } finally {
-    holder?.remove();
-    exporting = false;
-    $('downloadBtn').disabled = false;
-  }
-});
+}
 new ResizeObserver(fitPreview).observe(document.querySelector('.preview-stage'));
 new ResizeObserver(fitPreview).observe(achievement);
 document.fonts.ready.then(fitPreview);

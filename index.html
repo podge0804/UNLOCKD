@@ -8,6 +8,7 @@
   <title>UNLOCKD — создай своё достижение</title>
   <link rel="stylesheet" href="style.css">
   <script defer src="assets/vendor/html2canvas.min.js"></script>
+  <script defer src="minecraft.js"></script>
   <script defer src="script.js"></script>
 </head>
 <body>
@@ -18,9 +19,10 @@
     <section class="panel editor" aria-labelledby="editorHeading">
       <div class="section-heading"><h2 id="editorHeading">Создать достижение</h2><span class="step">01 / EDITOR</span></div>
       <label for="platform">Платформа</label><select id="platform"><option value="minecraft">Minecraft</option><option value="steam">Steam · базовый стиль</option></select>
+      <div id="minecraftOptions" class="field"><label for="toastStyle">Вид Minecraft-плашки</label><select id="toastStyle"><option value="classic">Классическое достижение · Java 1.8</option><option value="modern">Современное достижение · Java 1.12+</option><option value="challenge">Испытание · фиолетовый заголовок</option></select><label class="toggle"><input id="extendedMode" type="checkbox"> Добавить описание (не ванильный режим)</label><p id="toastHint" class="help" role="status">Оригинальные пропорции 160 × 32. Две строки, как в игре.</p></div>
       <div class="field"><label for="eyebrowInput">Строка уведомления</label><input id="eyebrowInput" value="Achievement Get!" maxlength="40"></div>
       <div class="field"><label for="titleInput">Название</label><input id="titleInput" value="Алмазы!" maxlength="60"></div>
-      <div class="field"><label for="descriptionInput">Описание <span>необязательно</span></label><textarea id="descriptionInput" maxlength="140" rows="2">Добудьте алмазы с помощью железной кирки.</textarea></div>
+      <div class="field"><label for="descriptionInput">Описание <span>для расширенного режима / Steam</span></label><textarea id="descriptionInput" maxlength="140" rows="2">Добудьте алмазы с помощью железной кирки.</textarea></div>
       <div class="divider"></div>
       <label for="itemSearch">Иконка из Minecraft</label><input id="itemSearch" type="search" placeholder="Поиск: diamond, sword, алмаз…" autocomplete="off" aria-describedby="searchStatus">
       <p id="searchStatus" class="help" role="status">Загружаем каталог…</p>
@@ -35,6 +37,7 @@
     <section class="preview-wrap" aria-labelledby="previewHeading">
       <div class="panel preview-panel"><div class="section-heading"><h2 id="previewHeading">Предпросмотр</h2><span class="live"><i></i> LIVE</span></div>
         <div class="preview-stage"><div id="previewSizer"><div id="achievement" class="achievement minecraft">
+          <canvas id="minecraftPreview" width="320" height="64" role="img" aria-label="Minecraft-достижение"></canvas>
           <div class="achievement-icon"><img id="imagePreview" src="assets/items/diamond.png" alt=""><span id="emojiPreview" hidden></span></div>
           <div class="achievement-text"><div id="eyebrow" class="eyebrow">Achievement Get!</div><div id="titlePreview" class="achievement-title">Алмазы!</div><div id="descriptionPreview" class="achievement-description">Добудьте алмазы с помощью железной кирки.</div></div>
         </div></div></div>
