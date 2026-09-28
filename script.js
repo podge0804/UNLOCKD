@@ -13,10 +13,156 @@ const defaults = { minecraft: 'Achievement Get!', steam: 'ACHIEVEMENT UNLOCKED' 
 const headings = { ...defaults };
 let platform = 'minecraft';
 let renderRevision = 0;
+let currentLang = 'en';
+
+const translations = {
+  en: {
+    pageTitle:'Custom Achievement Generator',
+    editorHeading:'Create achievement',
+    platform:'Platform',
+    steam:'Steam · basic style',
+    textColors:'Text colors',
+    heading:'Heading',
+    title:'Title',
+    description:'Description',
+    optional:'optional',
+    notification:'Notification line',
+    icon:'Minecraft icon',
+    searchPlaceholder:'Search: diamond, sword…',
+    loading:'Loading catalog…',
+    found:n => 'Found: ' + n + ' · catalog: ' + items.length,
+    notFound:'Nothing found. Try diamond or sword.',
+    catalogUnavailable:'Catalog unavailable. Diamond is available; try reloading the page.',
+    selected:'Selected:',
+    customImage:'Custom image or emoji',
+    upload:'Upload PNG, JPG or WebP · up to 5 MB',
+    useSelected:'Use selected item',
+    emoji:'Emoji · optional',
+    emojiPlaceholder:'Instead of an item or image',
+    emptyDescription:'If the description is empty, it is not shown.',
+    truncated:'Long text was shortened with an ellipsis.',
+    download:'↓ Download',
+    copy:'Copy',
+    share:'Share',
+    footer:'Unofficial project. Not affiliated with Mojang or Microsoft.',
+    untitled:'Untitled',
+    ownImage:'Custom image',
+    preparing:'Preparing PNG…',
+    preparingImage:'Preparing image…',
+    copying:'Copying…',
+    copied:'Copied.',
+    copyFallback:'Copy is unavailable — PNG downloaded.',
+    renderError:'Could not render the Minecraft achievement. Check the icon.',
+    imageTypeError:'Choose a PNG, JPG or WebP file up to 5 MB.',
+    imageLoaded:'Image loaded.',
+    imageReadError:'Could not read the image. Use a valid image up to 16 megapixels.',
+    iconError:'Could not load the icon. Choose another item or upload your own image.',
+    exportError:'Could not create the PNG. Check the icon and try again.',
+    prepareError:'Could not prepare the image.',
+    pngReady:(w,h)=>'PNG ready: ' + w + ' × ' + h + ' px.',
+    metaDescription:'Create a custom Minecraft achievement: choose an item, add text and download a PNG.',
+    docTitle:'UNLOCKD — custom achievement generator'
+  },
+  ru: {
+    pageTitle:'Генератор кастомных достижений',
+    editorHeading:'Создать достижение',
+    platform:'Платформа',
+    steam:'Steam · базовый стиль',
+    textColors:'Цвета текста',
+    heading:'Заголовок',
+    title:'Название',
+    description:'Описание',
+    optional:'необязательно',
+    notification:'Строка уведомления',
+    icon:'Иконка из Minecraft',
+    searchPlaceholder:'Поиск: diamond, sword, алмаз…',
+    loading:'Загружаем каталог…',
+    found:n => 'Найдено: ' + n + ' · каталог: ' + items.length,
+    notFound:'Ничего не найдено. Попробуй diamond или sword.',
+    catalogUnavailable:'Каталог недоступен. Доступен Diamond; попробуй перезагрузить страницу.',
+    selected:'Выбрано:',
+    customImage:'Своя картинка или emoji',
+    upload:'Загрузить PNG, JPG или WebP · до 5 МБ',
+    useSelected:'Вернуть выбранный предмет',
+    emoji:'Emoji · дополнительный вариант',
+    emojiPlaceholder:'Вместо предмета или картинки',
+    emptyDescription:'Если описание пустое, оно не показывается.',
+    truncated:'Длинный текст сокращён многоточием.',
+    download:'↓ Скачать',
+    copy:'Скопировать',
+    share:'Поделиться',
+    footer:'Неофициальный проект. Не связан с Mojang или Microsoft.',
+    untitled:'Без названия',
+    ownImage:'Своя картинка',
+    preparing:'Готовим PNG…',
+    preparingImage:'Готовим изображение…',
+    copying:'Копируем…',
+    copied:'Скопировано.',
+    copyFallback:'Скопировать нельзя — PNG скачан.',
+    renderError:'Не удалось отрисовать Minecraft-плашку. Проверь загрузку иконки.',
+    imageTypeError:'Выбери PNG, JPG или WebP размером до 5 МБ.',
+    imageLoaded:'Картинка загружена.',
+    imageReadError:'Не удалось прочитать картинку. Используй корректное изображение до 16 мегапикселей.',
+    iconError:'Не удалось загрузить иконку. Выбери другой предмет или свою картинку.',
+    exportError:'Не удалось создать PNG. Проверь иконку и попробуй ещё раз.',
+    prepareError:'Не удалось подготовить изображение.',
+    pngReady:(w,h)=>'PNG готов: ' + w + ' × ' + h + ' px.',
+    metaDescription:'Создай своё Minecraft-достижение: выбери предмет, добавь текст и скачай PNG.',
+    docTitle:'UNLOCKD — создай своё достижение'
+  }
+};
+
+const colorNames = {
+  en:['Black','Dark Blue','Dark Green','Dark Aqua','Dark Red','Dark Purple','Gold','Gray','Dark Gray','Blue','Green','Aqua','Red','Light Purple','Yellow','White','Custom RGB'],
+  ru:['Чёрный','Тёмно-синий','Тёмно-зелёный','Тёмно-бирюзовый','Тёмно-красный','Тёмно-фиолетовый','Золотой','Серый','Тёмно-серый','Синий','Зелёный','Бирюзовый','Красный','Розово-фиолетовый','Жёлтый','Белый','Свой RGB']
+};
+const colorSelectIds = ['headingColorPreset','titleColorPreset','descriptionColorPreset'];
+const t = key => translations[currentLang][key];
+
+function applyLanguage(lang) {
+  currentLang = lang === 'ru' ? 'ru' : 'en';
+  document.documentElement.lang = currentLang;
+  $('languageSelect').value = currentLang;
+
+  $('pageTitle').textContent = t('pageTitle');
+  $('editorHeading').textContent = t('editorHeading');
+  $('platformLabel').textContent = t('platform');
+  $('steamOption').textContent = t('steam');
+  $('textColorsLabel').textContent = t('textColors');
+  $('headingColorLabel').textContent = t('heading');
+  $('titleColorLabel').textContent = t('title');
+  $('descriptionColorLabel').textContent = t('description');
+  $('eyebrowLabel').textContent = t('notification');
+  $('titleLabel').textContent = t('title');
+  $('descriptionLabel').textContent = t('description');
+  $('optionalLabel').textContent = t('optional');
+  $('iconLabel').textContent = t('icon');
+  $('itemSearch').placeholder = t('searchPlaceholder');
+  $('selectedLabel').textContent = t('selected');
+  $('customImageSummary').textContent = t('customImage');
+  $('uploadLabel').textContent = t('upload');
+  $('clearImageBtn').textContent = t('useSelected');
+  $('emojiLabel').textContent = t('emoji');
+  $('emojiInput').placeholder = t('emojiPlaceholder');
+  $('descriptionInput').placeholder = t('description');
+  $('footerText').textContent = t('footer');
+  $('downloadBtn').textContent = t('download');
+  $('copyBtn').textContent = touchDevice ? t('share') : t('copy');
+  document.title = t('docTitle');
+  document.querySelector('meta[name="description"]').content = t('metaDescription');
+
+  for (const id of colorSelectIds) {
+    [...$(id).options].forEach((option,index) => option.textContent = colorNames[currentLang][index]);
+  }
+
+  $('toastHint').textContent = t('emptyDescription');
+  renderItems();
+  updatePreview();
+}
 function minecraftState() {
   return {
     heading:$('eyebrowInput').value,
-    title:$('titleInput').value || 'Без названия',
+    title:$('titleInput').value || t('untitled'),
     description:$('descriptionInput').value,
     headingColor:$('headingColor').value,
     titleColor:$('titleColor').value,
@@ -35,9 +181,9 @@ function renderMinecraft() {
     const preview=$('minecraftPreview');preview.width=canvas.width;preview.height=canvas.height;
     preview.getContext('2d').drawImage(canvas,0,0);
     preview.setAttribute('aria-label',state.heading+' '+state.title+(state.description?' '+state.description:''));
-    $('toastHint').textContent=truncated?'Длинный текст сокращён многоточием.':'Если описание пустое, оно не показывается.';
+    $('toastHint').textContent=truncated?t('truncated'):t('emptyDescription');
     fitPreview();
-  }).catch(()=>status('Не удалось отрисовать Minecraft-плашку. Проверь загрузку иконки.',true));
+  }).catch(()=>status(t('renderError'),true));
 }
 
 function status(message, error = false) {
@@ -68,13 +214,13 @@ function updatePreview() {
   $('descriptionInput').disabled = false;
   if (platform === 'minecraft') renderMinecraft();
   $('eyebrow').textContent = $('eyebrowInput').value;
-  $('titlePreview').textContent = $('titleInput').value || 'Без названия';
+  $('titlePreview').textContent = $('titleInput').value || t('untitled');
   $('descriptionPreview').textContent = $('descriptionInput').value;
   image.hidden = source === 'emoji';
   $('emojiPreview').hidden = source !== 'emoji';
   $('emojiPreview').textContent = $('emojiInput').value;
   image.classList.toggle('custom', source === 'upload');
-  $('selectedName').textContent = source === 'upload' ? 'Своя картинка' : source === 'emoji' ? 'Emoji' : selected.names.en;
+  $('selectedName').textContent = source === 'upload' ? t('ownImage') : source === 'emoji' ? 'Emoji' : (selected.names[currentLang] || selected.names.en);
   fitPreview();
 }
 function releaseCustom() {
@@ -135,13 +281,13 @@ function renderItems() {
     drawItemIcon(icon, item.icon);
 
     const name = document.createElement('span');
-    name.textContent = item.names.en;
+    name.textContent = item.names[currentLang] || item.names.en;
     button.title = item.names.ru || item.names.en;
     button.append(icon, name);
     button.addEventListener('click', () => useItem(item));
     $('itemResults').append(button);
   }
-  $('searchStatus').textContent = matches.length ? 'Найдено: ' + matches.length + ' · каталог: ' + items.length : 'Ничего не найдено. Попробуй diamond или sword.';
+  $('searchStatus').textContent = matches.length ? t('found')(matches.length) : t('notFound');
   markSelection();
 }
 async function loadItems() {
@@ -155,7 +301,7 @@ async function loadItems() {
   } catch {
     items = [selected];
     renderItems();
-    $('searchStatus').textContent = 'Каталог недоступен. Доступен Diamond; попробуй перезагрузить страницу.';
+    $('searchStatus').textContent = t('catalogUnavailable');
   }
 }
 ['eyebrowInput', 'titleInput', 'descriptionInput'].forEach(id => $(id).addEventListener('input', updatePreview));
@@ -165,6 +311,7 @@ $('platform').addEventListener('change', () => {
   $('eyebrowInput').value = headings[platform];
   updatePreview();
 });
+$('languageSelect').addEventListener('change', () => applyLanguage($('languageSelect').value));
 function paintColorPreview(canvasId, value) {
   const canvas = $(canvasId);
   const ctx = canvas.getContext('2d');
@@ -209,7 +356,7 @@ $('imageInput').addEventListener('change', async () => {
   if (!file) return;
   const token = ++revision;
   if (!['image/png', 'image/jpeg', 'image/webp'].includes(file.type) || file.size > 5 * 1024 * 1024) {
-    status('Выбери PNG, JPG или WebP размером до 5 МБ.', true);
+    status(t('imageTypeError'), true);
     $('imageInput').value = '';
     return;
   }
@@ -227,15 +374,15 @@ $('imageInput').addEventListener('change', async () => {
     $('emojiInput').value = '';
     updatePreview();
     markSelection();
-    status('Картинка загружена. Она остаётся только в твоём браузере.');
+    status(t('imageLoaded'));
   } catch {
     URL.revokeObjectURL(url);
     if (token !== revision) return;
     $('imageInput').value = '';
-    status('Не удалось прочитать картинку. Используй корректное изображение до 16 мегапикселей.', true);
+    status(t('imageReadError'), true);
   }
 });
-image.addEventListener('error', () => status('Не удалось загрузить иконку. Выбери другой предмет или свою картинку.', true));
+image.addEventListener('error', () => status(t('iconError'), true));
 async function createExportCanvas() {
   const filePlatform = platform;
   const state = filePlatform === 'minecraft' ? minecraftState() : null;
@@ -282,12 +429,12 @@ $('downloadBtn').addEventListener('click', async () => {
   if (exporting) return;
   exporting = true;
   $('downloadBtn').disabled = true;
-  status('Готовим PNG…');
+  status(t('preparing'));
   try {
     const {canvas, filePlatform} = await createExportCanvas();
     await savePNG(canvas, filePlatform);
   } catch {
-    status('Не удалось создать PNG. Проверь иконку и попробуй ещё раз.', true);
+    status(t('exportError'), true);
   } finally {
     exporting = false;
     $('downloadBtn').disabled = false;
@@ -295,7 +442,7 @@ $('downloadBtn').addEventListener('click', async () => {
 });
 
 const touchDevice = matchMedia('(pointer: coarse)').matches || navigator.maxTouchPoints > 0;
-if (touchDevice) $('copyBtn').textContent = 'Поделиться';
+if (touchDevice) $('copyBtn').textContent = t('share');
 
 async function sharePNG(blob) {
   if (!navigator.share) return false;
@@ -320,7 +467,7 @@ $('copyBtn').addEventListener('click', async () => {
   if (copying) return;
   copying = true;
   $('copyBtn').disabled = true;
-  status(touchDevice ? 'Готовим изображение…' : 'Копируем…');
+  status(touchDevice ? t('preparingImage') : t('copying'));
 
   try {
     const {canvas} = await createExportCanvas();
@@ -346,7 +493,7 @@ $('copyBtn').addEventListener('click', async () => {
     if (navigator.clipboard && typeof ClipboardItem !== 'undefined') {
       try {
         await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
-        status('Скопировано.');
+        status(t('copied'));
         return;
       } catch {}
     }
@@ -368,9 +515,9 @@ $('copyBtn').addEventListener('click', async () => {
 
     // Последний fallback — обычное скачивание.
     downloadBlob(blob);
-    status('Скопировать нельзя — PNG скачан.');
+    status(t('copyFallback'));
   } catch {
-    status('Не удалось подготовить изображение.', true);
+    status(t('prepareError'), true);
   } finally {
     copying = false;
     $('copyBtn').disabled = false;
@@ -388,11 +535,11 @@ async function savePNG(canvas,filePlatform) {
     link.click();
     link.remove();
     setTimeout(() => URL.revokeObjectURL(url), 60000);
-    status('PNG готов: ' + canvas.width + ' × ' + canvas.height + ' px.');
+    status(t('pngReady')(canvas.width, canvas.height));
 }
 new ResizeObserver(fitPreview).observe(document.querySelector('.preview-stage'));
 new ResizeObserver(fitPreview).observe(achievement);
 new ResizeObserver(fitPreview).observe($('minecraftToast'));
 document.fonts.ready.then(fitPreview);
-updatePreview();
+applyLanguage('en');
 loadItems();
