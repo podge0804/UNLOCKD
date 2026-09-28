@@ -165,21 +165,34 @@ $('platform').addEventListener('change', () => {
   $('eyebrowInput').value = headings[platform];
   updatePreview();
 });
-function bindColorPicker(presetId, colorId) {
+function paintColorPreview(canvasId, value) {
+  const canvas = $(canvasId);
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = value;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+
+function bindColorPicker(presetId, colorId, previewId) {
   const preset = $(presetId);
   const color = $(colorId);
+  const sync = () => paintColorPreview(previewId, color.value);
+
   preset.addEventListener('change', () => {
     if (preset.value !== 'custom') color.value = preset.value;
+    sync();
     updatePreview();
   });
   color.addEventListener('input', () => {
     preset.value = 'custom';
+    sync();
     updatePreview();
   });
+  sync();
 }
-bindColorPicker('headingColorPreset','headingColor');
-bindColorPicker('titleColorPreset','titleColor');
-bindColorPicker('descriptionColorPreset','descriptionColor');
+bindColorPicker('headingColorPreset','headingColor','headingColorPreview');
+bindColorPicker('titleColorPreset','titleColor','titleColorPreview');
+bindColorPicker('descriptionColorPreset','descriptionColor','descriptionColorPreview');
 $('itemSearch').addEventListener('input', renderItems);
 $('clearImageBtn').addEventListener('click', () => useItem());
 $('emojiInput').addEventListener('input', () => {
