@@ -257,6 +257,278 @@
         "ru": "Ведро воды"
       },
       "icon": "assets/items/water_bucket.png"
+    },
+    {
+      "id": "blaze_rod",
+      "names": {
+        "en": "Blaze Rod",
+        "ru": "Огненный стержень"
+      },
+      "icon": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/blaze_rod.png"
+    },
+    {
+      "id": "bone",
+      "names": {
+        "en": "Bone",
+        "ru": "Кость"
+      },
+      "icon": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/bone.png"
+    },
+    {
+      "id": "bucket",
+      "names": {
+        "en": "Bucket",
+        "ru": "Ведро"
+      },
+      "icon": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/bucket.png"
+    },
+    {
+      "id": "cake",
+      "names": {
+        "en": "Cake",
+        "ru": "Торт"
+      },
+      "icon": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/cake.png"
+    },
+    {
+      "id": "charcoal",
+      "names": {
+        "en": "Charcoal",
+        "ru": "Древесный уголь"
+      },
+      "icon": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/charcoal.png"
+    },
+    {
+      "id": "chorus_fruit",
+      "names": {
+        "en": "Chorus Fruit",
+        "ru": "Плод хоруса"
+      },
+      "icon": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/chorus_fruit.png"
+    },
+    {
+      "id": "diamond_axe",
+      "names": {
+        "en": "Diamond Axe",
+        "ru": "Алмазный топор"
+      },
+      "icon": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/diamond_axe.png"
+    },
+    {
+      "id": "diamond_hoe",
+      "names": {
+        "en": "Diamond Hoe",
+        "ru": "Алмазная мотыга"
+      },
+      "icon": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/diamond_hoe.png"
+    },
+    {
+      "id": "diamond_shovel",
+      "names": {
+        "en": "Diamond Shovel",
+        "ru": "Алмазная лопата"
+      },
+      "icon": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/diamond_shovel.png"
+    },
+    {
+      "id": "egg",
+      "names": {
+        "en": "Egg",
+        "ru": "Яйцо"
+      },
+      "icon": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/egg.png"
+    },
+    {
+      "id": "feather",
+      "names": {
+        "en": "Feather",
+        "ru": "Перо"
+      },
+      "icon": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/feather.png"
+    },
+    {
+      "id": "firework_rocket",
+      "names": {
+        "en": "Firework Rocket",
+        "ru": "Фейерверк"
+      },
+      "icon": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/firework_rocket.png"
+    },
+    {
+      "id": "flint_and_steel",
+      "names": {
+        "en": "Flint and Steel",
+        "ru": "Огниво"
+      },
+      "icon": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/flint_and_steel.png"
+    },
+    {
+      "id": "ghast_tear",
+      "names": {
+        "en": "Ghast Tear",
+        "ru": "Слеза гаста"
+      },
+      "icon": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/ghast_tear.png"
+    },
+    {
+      "id": "glowstone_dust",
+      "names": {
+        "en": "Glowstone Dust",
+        "ru": "Светокаменная пыль"
+      },
+      "icon": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/glowstone_dust.png"
+    },
+    {
+      "id": "golden_carrot",
+      "names": {
+        "en": "Golden Carrot",
+        "ru": "Золотая морковь"
+      },
+      "icon": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/golden_carrot.png"
+    },
+    {
+      "id": "gunpowder",
+      "names": {
+        "en": "Gunpowder",
+        "ru": "Порох"
+      },
+      "icon": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/gunpowder.png"
+    },
+    {
+      "id": "honey_bottle",
+      "names": {
+        "en": "Honey Bottle",
+        "ru": "Бутылочка мёда"
+      },
+      "icon": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/honey_bottle.png"
+    },
+    {
+      "id": "iron_axe",
+      "names": {
+        "en": "Iron Axe",
+        "ru": "Железный топор"
+      },
+      "icon": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/iron_axe.png"
+    },
+    {
+      "id": "iron_shovel",
+      "names": {
+        "en": "Iron Shovel",
+        "ru": "Железная лопата"
+      },
+      "icon": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/iron_shovel.png"
+    },
+    {
+      "id": "leather",
+      "names": {
+        "en": "Leather",
+        "ru": "Кожа"
+      },
+      "icon": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/leather.png"
+    },
+    {
+      "id": "magma_cream",
+      "names": {
+        "en": "Magma Cream",
+        "ru": "Сгусток магмы"
+      },
+      "icon": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/magma_cream.png"
+    },
+    {
+      "id": "name_tag",
+      "names": {
+        "en": "Name Tag",
+        "ru": "Бирка"
+      },
+      "icon": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/name_tag.png"
+    },
+    {
+      "id": "nether_star",
+      "names": {
+        "en": "Nether Star",
+        "ru": "Звезда Незера"
+      },
+      "icon": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/nether_star.png"
+    },
+    {
+      "id": "paper",
+      "names": {
+        "en": "Paper",
+        "ru": "Бумага"
+      },
+      "icon": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/paper.png"
+    },
+    {
+      "id": "phantom_membrane",
+      "names": {
+        "en": "Phantom Membrane",
+        "ru": "Мембрана фантома"
+      },
+      "icon": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/phantom_membrane.png"
+    },
+    {
+      "id": "quartz",
+      "names": {
+        "en": "Nether Quartz",
+        "ru": "Незер-кварц"
+      },
+      "icon": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/quartz.png"
+    },
+    {
+      "id": "rabbit_foot",
+      "names": {
+        "en": "Rabbit's Foot",
+        "ru": "Кроличья лапка"
+      },
+      "icon": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/rabbit_foot.png"
+    },
+    {
+      "id": "shears",
+      "names": {
+        "en": "Shears",
+        "ru": "Ножницы"
+      },
+      "icon": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/shears.png"
+    },
+    {
+      "id": "snowball",
+      "names": {
+        "en": "Snowball",
+        "ru": "Снежок"
+      },
+      "icon": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/snowball.png"
+    },
+    {
+      "id": "spyglass",
+      "names": {
+        "en": "Spyglass",
+        "ru": "Подзорная труба"
+      },
+      "icon": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/spyglass.png"
+    },
+    {
+      "id": "string",
+      "names": {
+        "en": "String",
+        "ru": "Нить"
+      },
+      "icon": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/string.png"
+    },
+    {
+      "id": "sugar",
+      "names": {
+        "en": "Sugar",
+        "ru": "Сахар"
+      },
+      "icon": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/sugar.png"
+    },
+    {
+      "id": "wheat",
+      "names": {
+        "en": "Wheat",
+        "ru": "Пшеница"
+      },
+      "icon": "https://raw.githubusercontent.com/PrismarineJS/minecraft-assets/master/data/1.20.2/items/wheat.png"
     }
   ]
 }
