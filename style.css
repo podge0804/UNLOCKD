@@ -67,9 +67,9 @@ input[type=file] { font-size:11px; }
 .steam .achievement-title { font-size:18px; font-weight:600; }
 .steam .achievement-description { font-size:13px; }
 .action-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px; }
-.primary { display:flex; align-items:center; justify-content:center; gap:16px; width:100%; padding:15px; border:1px solid #b798ff; border-radius:10px; color:white; background:linear-gradient(110deg,#8055e9,#a077ef); font-size:14px; font-weight:700; box-shadow:0 5px 24px #8755ef22; }
+.primary { display:flex; align-items:center; justify-content:center; gap:10px; width:100%; padding:11px 12px; border:1px solid #b798ff; border-radius:9px; color:white; background:linear-gradient(110deg,#8055e9,#a077ef); font-size:13px; font-weight:700; box-shadow:0 4px 18px #8755ef22; }
 .primary:hover { filter:brightness(1.12); }
-.action-copy { width:100%; font-size:14px; font-weight:700; }
+.action-copy { width:100%; padding:11px 12px; font-size:13px; font-weight:700; }
 .status { text-align:center; min-height:0; margin:8px 0 0; }
 .status.error { color:#ffb1b8; }
 .tip { display:flex; gap:14px; padding:25px 15px; color:#b7a8cc; font-size:12px; }
@@ -78,7 +78,28 @@ input[type=file] { font-size:11px; }
 .tip p { margin:6px 0; color:var(--muted); }
 footer { border-top:1px solid #ffffff0d; margin-top:42px; padding-top:22px; font-size:10px; color:#9b90ac; }
 @media(max-width:950px) { .layout { grid-template-columns:330px minmax(0,1fr); gap:16px; } .panel { padding:18px; } .step { display:none; } }
-@media(max-width:760px) { .page { padding:20px 16px; } .layout { grid-template-columns:1fr; } .preview-wrap { position:static; grid-row:1; } .intro { padding:22px 0; } .intro p { font-size:13px; } .badge { font-size:8px; letter-spacing:1px; } .brand { font-size:21px; } .brand-mark { width:28px; height:28px; } .preview-stage { min-height:0; padding:8px 0; } .tip { display:none; } .section-heading { margin-bottom:18px; } input,textarea,select { font-size:16px; } footer { flex-direction:column; align-items:flex-start; gap:8px; } }
+@media(max-width:760px) {
+  .page { padding:14px 12px; }
+  .layout { grid-template-columns:1fr; gap:14px; }
+  .preview-wrap { position:static; grid-row:1; }
+  .intro { padding:14px 0 16px; }
+  .intro h1 { margin:8px 0; font-size:clamp(30px,10vw,42px); }
+  .intro p { font-size:13px; }
+  .badge { font-size:8px; letter-spacing:1px; }
+  .brand { font-size:20px; }
+  .brand-mark { width:27px; height:27px; margin-right:9px; }
+  .header { padding-bottom:16px; }
+  .preview-stage { min-height:0; padding:6px 0; }
+  .action-row { gap:8px; margin-top:8px; }
+  .primary,.action-copy { padding:9px 10px; font-size:12px; border-radius:8px; }
+  .panel { padding:16px; border-radius:14px; }
+  .tip { display:none; }
+  .section-heading { margin-bottom:14px; }
+  input,textarea,select { font-size:16px; padding:10px 11px; }
+  .field { margin-top:14px; }
+  .divider { margin:18px 0; }
+  footer { flex-direction:column; align-items:flex-start; gap:8px; margin-top:28px; }
+}
 .toggle { display:flex; align-items:center; gap:9px; margin-top:14px; }
 .toggle input { width:16px; height:16px; accent-color:var(--accent); }
 /* Isolated bitmap: never participates in the Steam DOM/flex text layout.
