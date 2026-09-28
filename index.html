@@ -6,10 +6,10 @@
   <meta name="theme-color" content="#100d1b">
   <meta name="description" content="Создай своё Minecraft-достижение: выбери предмет, добавь текст и скачай PNG бесплатно.">
   <title>UNLOCKD — создай своё достижение</title>
-  <link rel="stylesheet" href="style.css?v=toast-isolation-1">
+  <link rel="stylesheet" href="style.css?v=colors-1">
   <script defer src="assets/vendor/html2canvas.min.js"></script>
-  <script defer src="minecraft.js?v=cyrillic-font-2"></script>
-  <script defer src="script.js?v=toast-isolation-1"></script>
+  <script defer src="minecraft.js?v=colors-1"></script>
+  <script defer src="script.js?v=colors-1"></script>
 </head>
 <body>
 <main class="page">
@@ -19,10 +19,36 @@
     <section class="panel editor" aria-labelledby="editorHeading">
       <div class="section-heading"><h2 id="editorHeading">Создать достижение</h2><span class="step">01 / EDITOR</span></div>
       <label for="platform">Платформа</label><select id="platform"><option value="minecraft">Minecraft</option><option value="steam">Steam · базовый стиль</option></select>
-      <div id="minecraftOptions" class="field"><label for="toastStyle">Вид Minecraft-плашки</label><select id="toastStyle"><option value="classic">Классическое достижение · Java 1.8</option><option value="modern">Современное достижение · Java 1.12+</option><option value="challenge">Испытание · фиолетовый заголовок</option></select><label class="toggle"><input id="extendedMode" type="checkbox"> Добавить описание (не ванильный режим)</label><p id="toastHint" class="help" role="status">Оригинальные пропорции 160 × 32. Две строки, как в игре.</p></div>
+      <div id="minecraftOptions" class="field">
+        <label>Цвета текста</label>
+        <div class="color-settings">
+          <div class="color-setting">
+            <span>Заголовок</span>
+            <select id="headingColorPreset" aria-label="Цвет заголовка">
+              <option value="#000000">Чёрный</option><option value="#0000aa">Тёмно-синий</option><option value="#00aa00">Тёмно-зелёный</option><option value="#00aaaa">Тёмно-бирюзовый</option><option value="#aa0000">Тёмно-красный</option><option value="#aa00aa">Тёмно-фиолетовый</option><option value="#ffaa00">Золотой</option><option value="#aaaaaa">Серый</option><option value="#555555">Тёмно-серый</option><option value="#5555ff">Синий</option><option value="#55ff55">Зелёный</option><option value="#55ffff">Бирюзовый</option><option value="#ff5555">Красный</option><option value="#ff55ff">Розово-фиолетовый</option><option value="#ffff55" selected>Жёлтый</option><option value="#ffffff">Белый</option><option value="custom">Свой RGB</option>
+            </select>
+            <input id="headingColor" type="color" value="#ffff55" aria-label="Свой цвет заголовка">
+          </div>
+          <div class="color-setting">
+            <span>Название</span>
+            <select id="titleColorPreset" aria-label="Цвет названия">
+              <option value="#000000">Чёрный</option><option value="#0000aa">Тёмно-синий</option><option value="#00aa00">Тёмно-зелёный</option><option value="#00aaaa">Тёмно-бирюзовый</option><option value="#aa0000">Тёмно-красный</option><option value="#aa00aa">Тёмно-фиолетовый</option><option value="#ffaa00">Золотой</option><option value="#aaaaaa">Серый</option><option value="#555555">Тёмно-серый</option><option value="#5555ff">Синий</option><option value="#55ff55">Зелёный</option><option value="#55ffff">Бирюзовый</option><option value="#ff5555">Красный</option><option value="#ff55ff">Розово-фиолетовый</option><option value="#ffff55">Жёлтый</option><option value="#ffffff" selected>Белый</option><option value="custom">Свой RGB</option>
+            </select>
+            <input id="titleColor" type="color" value="#ffffff" aria-label="Свой цвет названия">
+          </div>
+          <div class="color-setting">
+            <span>Описание</span>
+            <select id="descriptionColorPreset" aria-label="Цвет описания">
+              <option value="#000000">Чёрный</option><option value="#0000aa">Тёмно-синий</option><option value="#00aa00">Тёмно-зелёный</option><option value="#00aaaa">Тёмно-бирюзовый</option><option value="#aa0000">Тёмно-красный</option><option value="#aa00aa">Тёмно-фиолетовый</option><option value="#ffaa00">Золотой</option><option value="#aaaaaa" selected>Серый</option><option value="#555555">Тёмно-серый</option><option value="#5555ff">Синий</option><option value="#55ff55">Зелёный</option><option value="#55ffff">Бирюзовый</option><option value="#ff5555">Красный</option><option value="#ff55ff">Розово-фиолетовый</option><option value="#ffff55">Жёлтый</option><option value="#ffffff">Белый</option><option value="custom">Свой RGB</option>
+            </select>
+            <input id="descriptionColor" type="color" value="#aaaaaa" aria-label="Свой цвет описания">
+          </div>
+        </div>
+        <p id="toastHint" class="help" role="status">Если описание пустое, оно не показывается.</p>
+      </div>
       <div class="field"><label for="eyebrowInput">Строка уведомления</label><input id="eyebrowInput" value="Achievement Get!" maxlength="40"></div>
       <div class="field"><label for="titleInput">Название</label><input id="titleInput" value="Алмазы!" maxlength="60"></div>
-      <div class="field"><label for="descriptionInput">Описание <span>для расширенного режима / Steam</span></label><textarea id="descriptionInput" maxlength="140" rows="2">Добудьте алмазы с помощью железной кирки.</textarea></div>
+      <div class="field"><label for="descriptionInput">Описание <span>необязательно</span></label><textarea id="descriptionInput" maxlength="140" rows="2">Добудьте алмазы с помощью железной кирки.</textarea></div>
       <div class="divider"></div>
       <label for="itemSearch">Иконка из Minecraft</label><input id="itemSearch" type="search" placeholder="Поиск: diamond, sword, алмаз…" autocomplete="off" aria-describedby="searchStatus">
       <p id="searchStatus" class="help" role="status">Загружаем каталог…</p>
