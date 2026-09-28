@@ -106,9 +106,9 @@ async function drawItemIcon(canvas, src) {
     if (/^https?:\/\//.test(src)) img.crossOrigin = 'anonymous';
     img.src = src;
     await img.decode();
-    const ratio = Math.min(canvas.width / img.naturalWidth, canvas.height / img.naturalHeight);
-    const w = Math.max(1, Math.round(img.naturalWidth * ratio));
-    const h = Math.max(1, Math.round(img.naturalHeight * ratio));
+    const scale = Math.max(1, Math.floor(Math.min(canvas.width / img.naturalWidth, canvas.height / img.naturalHeight)));
+    const w = img.naturalWidth * scale;
+    const h = img.naturalHeight * scale;
     const x = Math.floor((canvas.width - w) / 2);
     const y = Math.floor((canvas.height - h) / 2);
     ctx.drawImage(img, x, y, w, h);
@@ -130,7 +130,7 @@ function renderItems() {
     // the actual Minecraft colors.
     const icon = document.createElement('canvas');
     icon.className = 'item-icon';
-    icon.width = icon.height = 28;
+    icon.width = icon.height = 32;
     icon.setAttribute('aria-hidden', 'true');
     drawItemIcon(icon, item.icon);
 
