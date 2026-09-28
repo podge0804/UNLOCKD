@@ -1,92 +1,117 @@
 <!doctype html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#100d1b">
   <meta name="color-scheme" content="dark">
-  <meta name="description" content="Создай своё Minecraft-достижение: выбери предмет, добавь текст и скачай PNG бесплатно.">
-  <title>UNLOCKD — создай своё достижение</title>
-  <link rel="stylesheet" href="style.css?v=color-chip-1">
+  <meta name="description" content="Create a custom Minecraft achievement: choose an item, add text and download a PNG.">
+  <title>UNLOCKD — custom achievement generator</title>
+  <link rel="stylesheet" href="style.css?v=i18n-1">
   <script defer src="assets/vendor/html2canvas.min.js"></script>
   <script defer src="minecraft.js?v=more-icons-1"></script>
-  <script defer src="script.js?v=color-chip-1"></script>
+  <script defer src="script.js?v=i18n-1"></script>
 </head>
 <body>
 <main class="page">
-  <header class="header"><a class="brand" href="./" aria-label="UNLOCKD — главная"><span class="brand-mark">U</span>UNLOCKD<span class="brand-dot">.</span></a></header>
-  <section class="intro"><h1>Генератор кастомных достижений</h1></section>
+  <header class="header">
+    <a class="brand" href="./" aria-label="UNLOCKD home"><span class="brand-mark">U</span>UNLOCKD<span class="brand-dot">.</span></a>
+    <select id="languageSelect" class="language-select" aria-label="Language">
+      <option value="en" selected>EN</option>
+      <option value="ru">RU</option>
+    </select>
+  </header>
+
+  <section class="intro"><h1 id="pageTitle">Custom Achievement Generator</h1></section>
+
   <div class="layout">
     <section class="panel editor" aria-labelledby="editorHeading">
-      <div class="section-heading"><h2 id="editorHeading">Создать достижение</h2><span class="step">01 / EDITOR</span></div>
-      <label for="platform">Платформа</label><select id="platform"><option value="minecraft">Minecraft</option><option value="steam">Steam · базовый стиль</option></select>
+      <div class="section-heading"><h2 id="editorHeading">Create achievement</h2><span class="step">01 / EDITOR</span></div>
+
+      <label id="platformLabel" for="platform">Platform</label>
+      <select id="platform">
+        <option value="minecraft">Minecraft</option>
+        <option id="steamOption" value="steam">Steam · basic style</option>
+      </select>
+
       <div id="minecraftOptions" class="field">
-        <label>Цвета текста</label>
+        <label id="textColorsLabel">Text colors</label>
         <div class="color-settings">
           <div class="color-setting">
-            <span>Заголовок</span>
-            <select id="headingColorPreset" aria-label="Цвет заголовка">
-              <option value="#000000">Чёрный</option><option value="#0000aa">Тёмно-синий</option><option value="#00aa00">Тёмно-зелёный</option><option value="#00aaaa">Тёмно-бирюзовый</option><option value="#aa0000">Тёмно-красный</option><option value="#aa00aa">Тёмно-фиолетовый</option><option value="#ffaa00">Золотой</option><option value="#aaaaaa">Серый</option><option value="#555555">Тёмно-серый</option><option value="#5555ff">Синий</option><option value="#55ff55">Зелёный</option><option value="#55ffff">Бирюзовый</option><option value="#ff5555">Красный</option><option value="#ff55ff">Розово-фиолетовый</option><option value="#ffff55" selected>Жёлтый</option><option value="#ffffff">Белый</option><option value="custom">Свой RGB</option>
+            <span id="headingColorLabel">Heading</span>
+            <select id="headingColorPreset" aria-label="Heading color">
+              <option value="#000000">Black</option><option value="#0000aa">Dark Blue</option><option value="#00aa00">Dark Green</option><option value="#00aaaa">Dark Aqua</option><option value="#aa0000">Dark Red</option><option value="#aa00aa">Dark Purple</option><option value="#ffaa00">Gold</option><option value="#aaaaaa">Gray</option><option value="#555555">Dark Gray</option><option value="#5555ff">Blue</option><option value="#55ff55">Green</option><option value="#55ffff">Aqua</option><option value="#ff5555">Red</option><option value="#ff55ff">Light Purple</option><option value="#ffff55" selected>Yellow</option><option value="#ffffff">White</option><option value="custom">Custom RGB</option>
             </select>
-            <label class="color-chip" aria-label="Свой цвет заголовка">
+            <label class="color-chip" aria-label="Custom heading color">
               <canvas id="headingColorPreview" width="40" height="34" aria-hidden="true"></canvas>
               <input id="headingColor" type="color" value="#ffff55">
             </label>
           </div>
+
           <div class="color-setting">
-            <span>Название</span>
-            <select id="titleColorPreset" aria-label="Цвет названия">
-              <option value="#000000">Чёрный</option><option value="#0000aa">Тёмно-синий</option><option value="#00aa00">Тёмно-зелёный</option><option value="#00aaaa">Тёмно-бирюзовый</option><option value="#aa0000">Тёмно-красный</option><option value="#aa00aa">Тёмно-фиолетовый</option><option value="#ffaa00">Золотой</option><option value="#aaaaaa">Серый</option><option value="#555555">Тёмно-серый</option><option value="#5555ff">Синий</option><option value="#55ff55">Зелёный</option><option value="#55ffff">Бирюзовый</option><option value="#ff5555">Красный</option><option value="#ff55ff">Розово-фиолетовый</option><option value="#ffff55">Жёлтый</option><option value="#ffffff" selected>Белый</option><option value="custom">Свой RGB</option>
+            <span id="titleColorLabel">Title</span>
+            <select id="titleColorPreset" aria-label="Title color">
+              <option value="#000000">Black</option><option value="#0000aa">Dark Blue</option><option value="#00aa00">Dark Green</option><option value="#00aaaa">Dark Aqua</option><option value="#aa0000">Dark Red</option><option value="#aa00aa">Dark Purple</option><option value="#ffaa00">Gold</option><option value="#aaaaaa">Gray</option><option value="#555555">Dark Gray</option><option value="#5555ff">Blue</option><option value="#55ff55">Green</option><option value="#55ffff">Aqua</option><option value="#ff5555">Red</option><option value="#ff55ff">Light Purple</option><option value="#ffff55">Yellow</option><option value="#ffffff" selected>White</option><option value="custom">Custom RGB</option>
             </select>
-            <label class="color-chip" aria-label="Свой цвет названия">
+            <label class="color-chip" aria-label="Custom title color">
               <canvas id="titleColorPreview" width="40" height="34" aria-hidden="true"></canvas>
               <input id="titleColor" type="color" value="#ffffff">
             </label>
           </div>
+
           <div class="color-setting">
-            <span>Описание</span>
-            <select id="descriptionColorPreset" aria-label="Цвет описания">
-              <option value="#000000">Чёрный</option><option value="#0000aa">Тёмно-синий</option><option value="#00aa00">Тёмно-зелёный</option><option value="#00aaaa">Тёмно-бирюзовый</option><option value="#aa0000">Тёмно-красный</option><option value="#aa00aa">Тёмно-фиолетовый</option><option value="#ffaa00">Золотой</option><option value="#aaaaaa" selected>Серый</option><option value="#555555">Тёмно-серый</option><option value="#5555ff">Синий</option><option value="#55ff55">Зелёный</option><option value="#55ffff">Бирюзовый</option><option value="#ff5555">Красный</option><option value="#ff55ff">Розово-фиолетовый</option><option value="#ffff55">Жёлтый</option><option value="#ffffff">Белый</option><option value="custom">Свой RGB</option>
+            <span id="descriptionColorLabel">Description</span>
+            <select id="descriptionColorPreset" aria-label="Description color">
+              <option value="#000000">Black</option><option value="#0000aa">Dark Blue</option><option value="#00aa00">Dark Green</option><option value="#00aaaa">Dark Aqua</option><option value="#aa0000">Dark Red</option><option value="#aa00aa">Dark Purple</option><option value="#ffaa00">Gold</option><option value="#aaaaaa" selected>Gray</option><option value="#555555">Dark Gray</option><option value="#5555ff">Blue</option><option value="#55ff55">Green</option><option value="#55ffff">Aqua</option><option value="#ff5555">Red</option><option value="#ff55ff">Light Purple</option><option value="#ffff55">Yellow</option><option value="#ffffff">White</option><option value="custom">Custom RGB</option>
             </select>
-            <label class="color-chip" aria-label="Свой цвет описания">
+            <label class="color-chip" aria-label="Custom description color">
               <canvas id="descriptionColorPreview" width="40" height="34" aria-hidden="true"></canvas>
               <input id="descriptionColor" type="color" value="#aaaaaa">
             </label>
           </div>
         </div>
-        <p id="toastHint" class="help" role="status">Если описание пустое, оно не показывается.</p>
+        <p id="toastHint" class="help" role="status">If the description is empty, it is not shown.</p>
       </div>
-      <div class="field"><label for="eyebrowInput">Строка уведомления</label><input id="eyebrowInput" value="Achievement Get!" maxlength="40"></div>
-      <div class="field"><label for="titleInput">Название</label><input id="titleInput" value="Алмазы!" maxlength="60"></div>
-      <div class="field"><label for="descriptionInput">Описание <span>необязательно</span></label><textarea id="descriptionInput" maxlength="140" rows="2" placeholder="Описание"></textarea></div>
+
+      <div class="field"><label id="eyebrowLabel" for="eyebrowInput">Notification line</label><input id="eyebrowInput" value="Achievement Get!" maxlength="40"></div>
+      <div class="field"><label id="titleLabel" for="titleInput">Title</label><input id="titleInput" value="Diamonds!" maxlength="60"></div>
+      <div class="field"><label for="descriptionInput"><span id="descriptionLabel">Description</span> <span id="optionalLabel">optional</span></label><textarea id="descriptionInput" maxlength="140" rows="2" placeholder="Description"></textarea></div>
+
       <div class="divider"></div>
-      <label for="itemSearch">Иконка из Minecraft</label><input id="itemSearch" type="search" placeholder="Поиск: diamond, sword, алмаз…" autocomplete="off" aria-describedby="searchStatus">
-      <p id="searchStatus" class="help" role="status">Загружаем каталог…</p>
-      <div id="itemResults" class="item-results" aria-label="Предметы Minecraft"></div>
-      <p class="selected">Выбрано: <strong id="selectedName">Diamond</strong></p>
-      <details><summary>Своя картинка или emoji</summary>
-        <label for="imageInput">Загрузить PNG, JPG или WebP · до 5 МБ</label><input id="imageInput" type="file" accept="image/png,image/jpeg,image/webp">
-        <button id="clearImageBtn" class="secondary small" type="button">Вернуть выбранный предмет</button>
-        <label for="emojiInput">Emoji · дополнительный вариант</label><input id="emojiInput" maxlength="8" placeholder="Вместо предмета или картинки">
+
+      <label id="iconLabel" for="itemSearch">Minecraft icon</label>
+      <input id="itemSearch" type="search" placeholder="Search: diamond, sword…" autocomplete="off" aria-describedby="searchStatus">
+      <p id="searchStatus" class="help" role="status">Loading catalog…</p>
+      <div id="itemResults" class="item-results" aria-label="Minecraft items"></div>
+      <p class="selected"><span id="selectedLabel">Selected:</span> <strong id="selectedName">Diamond</strong></p>
+
+      <details><summary id="customImageSummary">Custom image or emoji</summary>
+        <label id="uploadLabel" for="imageInput">Upload PNG, JPG or WebP · up to 5 MB</label><input id="imageInput" type="file" accept="image/png,image/jpeg,image/webp">
+        <button id="clearImageBtn" class="secondary small" type="button">Use selected item</button>
+        <label id="emojiLabel" for="emojiInput">Emoji · optional</label><input id="emojiInput" maxlength="8" placeholder="Instead of an item or image">
       </details>
     </section>
-    <section class="preview-wrap" aria-label="Предпросмотр достижения">
+
+    <section class="preview-wrap" aria-label="Achievement preview">
       <div class="panel preview-panel">
         <div class="preview-stage"><div id="previewSizer">
-          <div id="minecraftToast"><canvas id="minecraftPreview" width="320" height="64" role="img" aria-label="Minecraft-достижение"></canvas></div>
+          <div id="minecraftToast"><canvas id="minecraftPreview" width="320" height="64" role="img" aria-label="Minecraft achievement"></canvas></div>
           <div id="achievement" class="achievement steam" hidden>
-          <div class="achievement-icon"><img id="imagePreview" src="assets/items/diamond.png" alt=""><span id="emojiPreview" hidden></span></div>
-          <div class="achievement-text"><div id="eyebrow" class="eyebrow">Achievement Get!</div><div id="titlePreview" class="achievement-title">Алмазы!</div><div id="descriptionPreview" class="achievement-description"></div></div>
-        </div></div></div>
+            <div class="achievement-icon"><img id="imagePreview" src="assets/items/diamond.png" alt=""><span id="emojiPreview" hidden></span></div>
+            <div class="achievement-text"><div id="eyebrow" class="eyebrow">Achievement Get!</div><div id="titlePreview" class="achievement-title">Diamonds!</div><div id="descriptionPreview" class="achievement-description"></div></div>
+          </div>
+        </div></div>
+
         <div class="action-row">
-          <button class="primary" id="downloadBtn" type="button">↓ Скачать</button>
-          <button class="secondary action-copy" id="copyBtn" type="button">Скопировать</button>
+          <button class="primary" id="downloadBtn" type="button">↓ Download</button>
+          <button class="secondary action-copy" id="copyBtn" type="button">Copy</button>
         </div>
         <p id="appStatus" class="help status" role="status" aria-live="polite"></p>
       </div>
     </section>
   </div>
-  <footer><span>Неофициальный проект. Не связан с Mojang или Microsoft.</span></footer>
+
+  <footer><span id="footerText">Unofficial project. Not affiliated with Mojang or Microsoft.</span></footer>
 </main>
 </body>
 </html>
