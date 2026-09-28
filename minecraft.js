@@ -78,18 +78,18 @@ window.MinecraftToast = (() => {
     await ready;
     let icon=null;
     if(!state.emoji) icon=await load(state.icon);
-    const extra=state.modern && state.extended && state.description ? lines(state.description,248) : [];
+    const extra=state.description ? lines(state.description,248) : [];
     const canvas=document.createElement('canvas'); canvas.width=320;canvas.height=64+extra.length*18;
     const ctx=canvas.getContext('2d');ctx.imageSmoothingEnabled=false;
-    frame(ctx,state.modern,canvas.height);
+    frame(ctx,false,canvas.height);
     if(icon) {
       const ratio=Math.min(32/icon.naturalWidth,32/icon.naturalHeight),w=icon.naturalWidth*ratio,h=icon.naturalHeight*ratio;
       ctx.imageSmoothingEnabled=state.custom;
       ctx.drawImage(icon,16+(32-w)/2,16+(32-h)/2,w,h);ctx.imageSmoothingEnabled=false;
     } else { ctx.font='28px sans-serif';ctx.textBaseline='top';ctx.fillText(state.emoji,16,14); }
-    text(ctx,fit(state.heading,248),60,14,state.challenge?'#ff55ff':'#ffff00');
-    text(ctx,fit(state.title || 'Без названия',248),60,36,'#ffffff');
-    extra.forEach((line,i)=>text(ctx,line,60,58+i*18,'#aaaaaa'));
+    text(ctx,fit(state.heading,248),60,14,state.headingColor || '#ffff55');
+    text(ctx,fit(state.title || 'Без названия',248),60,36,state.titleColor || '#ffffff');
+    extra.forEach((line,i)=>text(ctx,line,60,58+i*18,state.descriptionColor || '#aaaaaa'));
     return {canvas,truncated:width(state.heading)>248 || width(state.title)>248};
   }
   return {ready,render};
