@@ -91,10 +91,12 @@ footer { border-top:1px solid #ffffff0d; margin-top:42px; padding-top:22px; font
 .color-setting { display:grid; grid-template-columns:78px minmax(0,1fr) 46px; gap:8px; align-items:center; }
 .color-setting>span { color:#cfc7dd; font-size:11px; }
 .color-setting select { padding:9px 10px; font-size:12px; }
-.color-setting input[type=color] { width:46px; height:40px; padding:3px; border-radius:8px; cursor:pointer; }
+.color-chip { position:relative; display:block; width:46px; height:40px; margin:0; border:1px solid var(--border); border-radius:8px; overflow:hidden; cursor:pointer; background:#110d1b; }
+.color-chip canvas { display:block; width:100%; height:100%; }
+.color-chip input[type=color] { position:absolute; inset:0; width:100%; height:100%; padding:0; border:0; opacity:0; cursor:pointer; }
 @media(max-width:420px) {
   .color-setting { grid-template-columns:68px minmax(0,1fr) 42px; gap:6px; }
-  .color-setting input[type=color] { width:42px; }
+  .color-chip { width:42px; }
 }
 
 /* Keep Minecraft textures unchanged in browser/OS dark modes. */
