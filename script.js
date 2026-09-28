@@ -257,23 +257,83 @@ $('downloadBtn').addEventListener('click', async () => {
   }
 });
 
+const touchDevice = matchMedia('(pointer: coarse)').matches || navigator.maxTouchPoints > 0;
+if (touchDevice) $('copyBtn').textContent = 'Поделиться';
+
+async function sharePNG(blob) {
+  if (!navigator.share) return false;
+  const file = new File([blob], platform + '-achievement.png', { type: 'image/png' });
+  if (navigator.canShare && !navigator.canShare({ files: [file] })) return false;
+  await navigator.share({ files: [file], title: 'UNLOCKD' });
+  return true;
+}
+
+function downloadBlob(blob) {
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = platform + '-achievement.png';
+  document.body.append(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 60000);
+}
+
 $('copyBtn').addEventListener('click', async () => {
   if (copying) return;
-  if (!navigator.clipboard || typeof ClipboardItem === 'undefined') {
-    status('Копирование изображения не поддерживается этим браузером.', true);
-    return;
-  }
   copying = true;
   $('copyBtn').disabled = true;
-  status('Копируем…');
+  status(touchDevice ? 'Готовим изображение…' : 'Копируем…');
+
   try {
     const {canvas} = await createExportCanvas();
     const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
     if (!blob) throw new Error('Empty export');
-    await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
-    status('Скопировано.');
+
+    // На телефонах системное меню «Поделиться» надёжнее,
+    // чем запись PNG в буфер обмена браузера.
+    if (touchDevice) {
+      try {
+        if (await sharePNG(blob)) {
+          status('');
+          return;
+        }
+      } catch (error) {
+        if (error?.name === 'AbortError') {
+          status('');
+          return;
+        }
+      }
+    }
+
+    if (navigator.clipboard && typeof ClipboardItem !== 'undefined') {
+      try {
+        await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+        status('Скопировано.');
+        return;
+      } catch {}
+    }
+
+    // Если браузер не умеет копировать PNG, пробуем системный share.
+    if (!touchDevice) {
+      try {
+        if (await sharePNG(blob)) {
+          status('');
+          return;
+        }
+      } catch (error) {
+        if (error?.name === 'AbortError') {
+          status('');
+          return;
+        }
+      }
+    }
+
+    // Последний fallback — обычное скачивание.
+    downloadBlob(blob);
+    status('Скопировать нельзя — PNG скачан.');
   } catch {
-    status('Не удалось скопировать изображение.', true);
+    status('Не удалось подготовить изображение.', true);
   } finally {
     copying = false;
     $('copyBtn').disabled = false;
