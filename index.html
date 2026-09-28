@@ -7,7 +7,7 @@
   <meta name="color-scheme" content="dark">
   <meta name="description" content="Create a custom Minecraft achievement: choose an item, add text and download a PNG.">
   <title>UNLOCKD — custom achievement generator</title>
-  <link rel="stylesheet" href="style.css?v=mobile-compact-1">
+  <link rel="stylesheet" href="style.css?v=header-title-1">
   <script defer src="assets/vendor/html2canvas.min.js"></script>
   <script defer src="minecraft.js?v=more-icons-1"></script>
   <script defer src="script.js?v=i18n-1"></script>
@@ -15,14 +15,18 @@
 <body>
 <main class="page">
   <header class="header">
-    <a class="brand" href="./" aria-label="UNLOCKD home"><span class="brand-mark">U</span>UNLOCKD<span class="brand-dot">.</span></a>
+    <a class="brand" href="./" aria-label="UNLOCKD home">
+      <span class="brand-mark">U</span>
+      <span class="brand-text">
+        <strong>UNLOCKD<span class="brand-dot">.</span></strong>
+        <small id="pageTitle">Custom Achievement Generator</small>
+      </span>
+    </a>
     <select id="languageSelect" class="language-select" aria-label="Language">
       <option value="en" selected>EN</option>
       <option value="ru">RU</option>
     </select>
   </header>
-
-  <section class="intro"><h1 id="pageTitle">Custom Achievement Generator</h1></section>
 
   <div class="layout">
     <section class="panel editor" aria-labelledby="editorHeading">
