@@ -1,7 +1,12 @@
 'use strict';
 // Vanilla Java bitmap renderer. Render once; use the same pixels for preview and PNG.
 window.MinecraftToast = (() => {
-  const load = path => { const image = new Image(); image.src = path; return image.decode().then(() => image); };
+  const load = path => {
+    const image = new Image();
+    if (/^https?:\/\//.test(path)) image.crossOrigin = 'anonymous';
+    image.src = path;
+    return image.decode().then(() => image);
+  };
   let assets;
   const ready = Promise.all([
     load('assets/minecraft/achievement_background.png'),
