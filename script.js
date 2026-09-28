@@ -97,6 +97,24 @@ function markSelection() {
     button.setAttribute('aria-pressed', String(source === 'item' && button.dataset.id === selected.id));
   });
 }
+async function drawItemIcon(canvas, src) {
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.imageSmoothingEnabled = false;
+  try {
+    const img = new Image();
+    if (/^https?:\/\//.test(src)) img.crossOrigin = 'anonymous';
+    img.src = src;
+    await img.decode();
+    const ratio = Math.min(canvas.width / img.naturalWidth, canvas.height / img.naturalHeight);
+    const w = Math.max(1, Math.round(img.naturalWidth * ratio));
+    const h = Math.max(1, Math.round(img.naturalHeight * ratio));
+    const x = Math.floor((canvas.width - w) / 2);
+    const y = Math.floor((canvas.height - h) / 2);
+    ctx.drawImage(img, x, y, w, h);
+  } catch {}
+}
+
 function renderItems() {
   const query = $('itemSearch').value.trim().toLocaleLowerCase().replaceAll('_', ' ');
   const matches = items.filter(item => [item.id.replaceAll('_', ' '), ...Object.values(item.names), ...(item.aliases || [])].join(' ').toLocaleLowerCase().includes(query));
@@ -106,10 +124,16 @@ function renderItems() {
     button.type = 'button';
     button.className = 'item';
     button.dataset.id = item.id;
-    const icon = document.createElement('img');
-    icon.src = item.icon;
-    icon.alt = '';
+
+    // Canvas is intentional here: some Android/Samsung dark-mode engines
+    // recolor <img> pixels. Drawing the original texture to canvas preserves
+    // the actual Minecraft colors.
+    const icon = document.createElement('canvas');
+    icon.className = 'item-icon';
     icon.width = icon.height = 28;
+    icon.setAttribute('aria-hidden', 'true');
+    drawItemIcon(icon, item.icon);
+
     const name = document.createElement('span');
     name.textContent = item.names.en;
     button.title = item.names.ru || item.names.en;
