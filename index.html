@@ -7,7 +7,7 @@
   <meta name="color-scheme" content="dark">
   <meta name="description" content="Create a custom Minecraft achievement: choose an item, add text and download a PNG.">
   <title>UNLOCKD — custom achievement generator</title>
-  <link rel="stylesheet" href="style.css?v=header-title-1">
+  <link rel="stylesheet" href="style.css?v=label-fix-1">
   <script defer src="assets/vendor/html2canvas.min.js"></script>
   <script defer src="minecraft.js?v=more-icons-1"></script>
   <script defer src="script.js?v=i18n-1"></script>
@@ -79,7 +79,7 @@
 
       <div class="field"><label id="eyebrowLabel" for="eyebrowInput">Notification line</label><input id="eyebrowInput" value="Achievement Get!" maxlength="40"></div>
       <div class="field"><label id="titleLabel" for="titleInput">Title</label><input id="titleInput" value="Diamonds!" maxlength="60"></div>
-      <div class="field"><label for="descriptionInput"><span id="descriptionLabel">Description</span> <span id="optionalLabel">optional</span></label><textarea id="descriptionInput" maxlength="140" rows="2" placeholder="Description"></textarea></div>
+      <div class="field"><label class="field-label" for="descriptionInput"><span id="descriptionLabel">Description</span><small id="optionalLabel">optional</small></label><textarea id="descriptionInput" maxlength="140" rows="2" placeholder="Description"></textarea></div>
 
       <div class="divider"></div>
 
