@@ -7,10 +7,10 @@
   <meta name="color-scheme" content="dark">
   <meta name="description" content="Создай своё Minecraft-достижение: выбери предмет, добавь текст и скачай PNG бесплатно.">
   <title>UNLOCKD — создай своё достижение</title>
-  <link rel="stylesheet" href="style.css?v=icon-size-2">
+  <link rel="stylesheet" href="style.css?v=color-chip-1">
   <script defer src="assets/vendor/html2canvas.min.js"></script>
   <script defer src="minecraft.js?v=more-icons-1"></script>
-  <script defer src="script.js?v=icon-size-2"></script>
+  <script defer src="script.js?v=color-chip-1"></script>
 </head>
 <body>
 <main class="page">
@@ -28,21 +28,30 @@
             <select id="headingColorPreset" aria-label="Цвет заголовка">
               <option value="#000000">Чёрный</option><option value="#0000aa">Тёмно-синий</option><option value="#00aa00">Тёмно-зелёный</option><option value="#00aaaa">Тёмно-бирюзовый</option><option value="#aa0000">Тёмно-красный</option><option value="#aa00aa">Тёмно-фиолетовый</option><option value="#ffaa00">Золотой</option><option value="#aaaaaa">Серый</option><option value="#555555">Тёмно-серый</option><option value="#5555ff">Синий</option><option value="#55ff55">Зелёный</option><option value="#55ffff">Бирюзовый</option><option value="#ff5555">Красный</option><option value="#ff55ff">Розово-фиолетовый</option><option value="#ffff55" selected>Жёлтый</option><option value="#ffffff">Белый</option><option value="custom">Свой RGB</option>
             </select>
-            <input id="headingColor" type="color" value="#ffff55" aria-label="Свой цвет заголовка">
+            <label class="color-chip" aria-label="Свой цвет заголовка">
+              <canvas id="headingColorPreview" width="40" height="34" aria-hidden="true"></canvas>
+              <input id="headingColor" type="color" value="#ffff55">
+            </label>
           </div>
           <div class="color-setting">
             <span>Название</span>
             <select id="titleColorPreset" aria-label="Цвет названия">
               <option value="#000000">Чёрный</option><option value="#0000aa">Тёмно-синий</option><option value="#00aa00">Тёмно-зелёный</option><option value="#00aaaa">Тёмно-бирюзовый</option><option value="#aa0000">Тёмно-красный</option><option value="#aa00aa">Тёмно-фиолетовый</option><option value="#ffaa00">Золотой</option><option value="#aaaaaa">Серый</option><option value="#555555">Тёмно-серый</option><option value="#5555ff">Синий</option><option value="#55ff55">Зелёный</option><option value="#55ffff">Бирюзовый</option><option value="#ff5555">Красный</option><option value="#ff55ff">Розово-фиолетовый</option><option value="#ffff55">Жёлтый</option><option value="#ffffff" selected>Белый</option><option value="custom">Свой RGB</option>
             </select>
-            <input id="titleColor" type="color" value="#ffffff" aria-label="Свой цвет названия">
+            <label class="color-chip" aria-label="Свой цвет названия">
+              <canvas id="titleColorPreview" width="40" height="34" aria-hidden="true"></canvas>
+              <input id="titleColor" type="color" value="#ffffff">
+            </label>
           </div>
           <div class="color-setting">
             <span>Описание</span>
             <select id="descriptionColorPreset" aria-label="Цвет описания">
               <option value="#000000">Чёрный</option><option value="#0000aa">Тёмно-синий</option><option value="#00aa00">Тёмно-зелёный</option><option value="#00aaaa">Тёмно-бирюзовый</option><option value="#aa0000">Тёмно-красный</option><option value="#aa00aa">Тёмно-фиолетовый</option><option value="#ffaa00">Золотой</option><option value="#aaaaaa" selected>Серый</option><option value="#555555">Тёмно-серый</option><option value="#5555ff">Синий</option><option value="#55ff55">Зелёный</option><option value="#55ffff">Бирюзовый</option><option value="#ff5555">Красный</option><option value="#ff55ff">Розово-фиолетовый</option><option value="#ffff55">Жёлтый</option><option value="#ffffff">Белый</option><option value="custom">Свой RGB</option>
             </select>
-            <input id="descriptionColor" type="color" value="#aaaaaa" aria-label="Свой цвет описания">
+            <label class="color-chip" aria-label="Свой цвет описания">
+              <canvas id="descriptionColorPreview" width="40" height="34" aria-hidden="true"></canvas>
+              <input id="descriptionColor" type="color" value="#aaaaaa">
+            </label>
           </div>
         </div>
         <p id="toastHint" class="help" role="status">Если описание пустое, оно не показывается.</p>
