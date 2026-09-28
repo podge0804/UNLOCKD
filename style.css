@@ -86,3 +86,13 @@ footer { border-top:1px solid #ffffff0d; margin-top:42px; padding-top:22px; font
 #minecraftToast { display:block; width:320px; padding:0; border:0; flex:none; transform-origin:top left; }
 #minecraftPreview { display:block; max-width:none; image-rendering:pixelated; }
 @media(prefers-reduced-motion:no-preference) { button { transition:background .15s,border-color .15s,filter .15s; } }
+
+.color-settings { display:grid; gap:10px; }
+.color-setting { display:grid; grid-template-columns:78px minmax(0,1fr) 46px; gap:8px; align-items:center; }
+.color-setting>span { color:#cfc7dd; font-size:11px; }
+.color-setting select { padding:9px 10px; font-size:12px; }
+.color-setting input[type=color] { width:46px; height:40px; padding:3px; border-radius:8px; cursor:pointer; }
+@media(max-width:420px) {
+  .color-setting { grid-template-columns:68px minmax(0,1fr) 42px; gap:6px; }
+  .color-setting input[type=color] { width:42px; }
+}
