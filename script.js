@@ -14,9 +14,17 @@ const headings = { ...defaults };
 let platform = 'minecraft';
 let renderRevision = 0;
 function minecraftState() {
-  return {heading:$('eyebrowInput').value,title:$('titleInput').value || 'Без названия',description:$('descriptionInput').value,
-    extended:$('toastStyle').value !== 'classic' && $('extendedMode').checked,modern:$('toastStyle').value!=='classic',challenge:$('toastStyle').value==='challenge',
-    icon:image.src,custom:source==='upload',emoji:source==='emoji'?$('emojiInput').value:''};
+  return {
+    heading:$('eyebrowInput').value,
+    title:$('titleInput').value || 'Без названия',
+    description:$('descriptionInput').value,
+    headingColor:$('headingColor').value,
+    titleColor:$('titleColor').value,
+    descriptionColor:$('descriptionColor').value,
+    icon:image.src,
+    custom:source==='upload',
+    emoji:source==='emoji'?$('emojiInput').value:''
+  };
 }
 function renderMinecraft() {
   const currentRender = renderRevision + 1;
@@ -26,8 +34,8 @@ function renderMinecraft() {
     if(currentRender!==renderRevision) return;
     const preview=$('minecraftPreview');preview.width=canvas.width;preview.height=canvas.height;
     preview.getContext('2d').drawImage(canvas,0,0);
-    preview.setAttribute('aria-label',state.heading+' '+state.title+(state.extended?' '+state.description:''));
-    $('toastHint').textContent=truncated?'Длинный текст сокращён многоточием, чтобы сохранить игровые пропорции.':'Оригинальные пропорции 160 × 32. Две строки, как в игре.';
+    preview.setAttribute('aria-label',state.heading+' '+state.title+(state.description?' '+state.description:''));
+    $('toastHint').textContent=truncated?'Длинный текст сокращён многоточием.':'Если описание пустое, оно не показывается.';
     fitPreview();
   }).catch(()=>status('Не удалось отрисовать Minecraft-плашку. Проверь загрузку иконки.',true));
 }
@@ -57,8 +65,7 @@ function updatePreview() {
   achievement.hidden = platform === 'minecraft';
   $('minecraftToast').hidden = platform !== 'minecraft';
   $('minecraftOptions').hidden = platform !== 'minecraft';
-  $('extendedMode').disabled = $('toastStyle').value === 'classic';
-  $('descriptionInput').disabled = platform === 'minecraft' && ($('toastStyle').value === 'classic' || !$('extendedMode').checked);
+  $('descriptionInput').disabled = false;
   if (platform === 'minecraft') renderMinecraft();
   $('eyebrow').textContent = $('eyebrowInput').value;
   $('titlePreview').textContent = $('titleInput').value || 'Без названия';
@@ -134,11 +141,21 @@ $('platform').addEventListener('change', () => {
   $('eyebrowInput').value = headings[platform];
   updatePreview();
 });
-$('extendedMode').addEventListener('change', updatePreview);
-$('toastStyle').addEventListener('change', () => {
-  $('eyebrowInput').value = {classic:'Achievement Get!',modern:'Advancement Made!',challenge:'Challenge Complete!'}[$('toastStyle').value];
-  updatePreview();
-});
+function bindColorPicker(presetId, colorId) {
+  const preset = $(presetId);
+  const color = $(colorId);
+  preset.addEventListener('change', () => {
+    if (preset.value !== 'custom') color.value = preset.value;
+    updatePreview();
+  });
+  color.addEventListener('input', () => {
+    preset.value = 'custom';
+    updatePreview();
+  });
+}
+bindColorPicker('headingColorPreset','headingColor');
+bindColorPicker('titleColorPreset','titleColor');
+bindColorPicker('descriptionColorPreset','descriptionColor');
 $('itemSearch').addEventListener('input', renderItems);
 $('clearImageBtn').addEventListener('click', () => useItem());
 $('emojiInput').addEventListener('input', () => {
