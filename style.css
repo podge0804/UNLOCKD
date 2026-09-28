@@ -1,5 +1,5 @@
 @font-face { font-family: Pixel; src: url('assets/fonts/PressStart2P-Regular.ttf') format('truetype'); font-display: swap; }
-:root { color-scheme: dark; --muted:#a6a0b9; --border:#332a47; --accent:#a38aff; }
+:root { color-scheme: only dark; --muted:#a6a0b9; --border:#332a47; --accent:#a38aff; }
 * { box-sizing:border-box; }
 body { margin:0; color:#f4f0ff; background:radial-gradient(ellipse at 75% 15%,#24173d 0,transparent 48%),#100d1b; font:15px/1.6 system-ui,sans-serif; }
 button,input,textarea,select { font:inherit; }
@@ -95,4 +95,13 @@ footer { border-top:1px solid #ffffff0d; margin-top:42px; padding-top:22px; font
 @media(max-width:420px) {
   .color-setting { grid-template-columns:68px minmax(0,1fr) 42px; gap:6px; }
   .color-setting input[type=color] { width:42px; }
+}
+
+/* Keep Minecraft textures unchanged in browser/OS dark modes. */
+.item img,.achievement-icon img,#minecraftPreview {
+  filter:none!important;
+  -webkit-filter:none!important;
+  mix-blend-mode:normal!important;
+  opacity:1!important;
+  forced-color-adjust:none;
 }
